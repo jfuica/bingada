@@ -16,6 +16,7 @@ with ADA.CONTAINERS;
 
 
 with GLIB.MAIN;
+with GLIB.ERROR;
 
 with GTK.BOX;
 with GTK.MAIN;
@@ -29,8 +30,11 @@ with GTK.MENU;
 with GTK.MENU_BAR;
 with GTK.MENU_ITEM;
 with GTK.HANDLERS;
+
 with GDK.EVENT;
 with GDK.TYPES.KEYSYMS;
+with GDK.PIXBUF;
+
 with Q_BINGO.Q_BOMBO;
 with Q_BINGO_HELP;
 with Q_CSV.Q_READ_FILE;
@@ -47,6 +51,8 @@ package body Q_BINGADA is
   
   C_EXIT_MESSAGE : constant STRING := "Hasta la vista!";
   
+  C_BOMBO_FILE : constant STRING := "bombo.png";
+
   --==================================================================
   
   procedure P_MAIN_QUIT (SELF : access GTK.WIDGET.GTK_WIDGET_RECORD'Class) is
@@ -383,7 +389,7 @@ package body Q_BINGADA is
 
     V_BOMBO_BUTTON.ON_CLICKED (P_BUTTON_CLICKED'ACCESS);
     
-    V_BOMBO_IMAGE := GTK.IMAGE.GTK_IMAGE_NEW_FROM_FILE ("bombo.png");
+    V_BOMBO_IMAGE := GTK.IMAGE.GTK_IMAGE_NEW_FROM_FILE (C_BOMBO_FILE);
     
     V_BOMBO_BUTTON.SET_IMAGE (IMAGE => V_BOMBO_IMAGE);
 
@@ -443,6 +449,10 @@ package body Q_BINGADA is
     
     V_VERTICAL_BOX : GTK.BOX.GTK_BOX;
     
+    V_BOMBO_ICON : GDK.PIXBUF.GDK_PIXBUF;
+
+    V_ICON_ERROR : GLIB.ERROR.GERROR;
+
     --V_HORIZONTAL_BOX_1 : GTK.BOX.GTK_BOX;
     
   begin
@@ -461,6 +471,15 @@ package body Q_BINGADA is
 
     GTK.WINDOW.SET_TITLE (V_MAIN_WINDOW, "BingAda");
     
+    GDK.PIXBUF.GDK_NEW_FROM_FILE
+      (PIXBUF   => V_BOMBO_ICON,
+       FILENAME => C_BOMBO_FILE,
+       ERROR    => V_ICON_ERROR);
+
+    GTK.WINDOW.SET_ICON
+      (WINDOW => V_MAIN_WINDOW,
+       ICON   => V_BOMBO_ICON);
+
     -- |--- Vertical BOX |
     -- |                 |
     -- |                 |
