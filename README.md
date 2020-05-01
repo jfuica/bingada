@@ -19,7 +19,7 @@ The Bingo is fully functional, you can :
 - Check Cards. They are read from a file called bingo_cards.csv.
 
 
-#Linux/Windows Install using GNAT Community Edition
+# Linux/Windows Install using GNAT Community Edition
 ===================================================
 
 - Install the GNAT Community Edition for your Operating System version.
@@ -49,7 +49,7 @@ gprbuild -p bingada
 ```
 - Or you can install "bombo.png" and "bingada" to any location and run from there.
 
-#Wishes / TODO
+# Wishes / TODO
 ==============
 
 The interface is really simple, and it could be improved, but, I think the main goals could be :
