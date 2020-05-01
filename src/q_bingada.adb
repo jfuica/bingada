@@ -58,6 +58,8 @@ package body Q_BINGADA is
   
   C_BOMBO_FILE : constant STRING := "bombo.png";
 
+  C_DRUM_SPIN_FILE : constant STRING := "drum_spin.png";
+  
   --==================================================================
   
   procedure P_LOAD_CSS is
@@ -216,6 +218,36 @@ package body Q_BINGADA is
     P_GET_NUMBER;
     
   end P_BUTTON_CLICKED;
+  
+  --==================================================================
+  
+  procedure P_BUTTON_PRESSED
+     (SELF : access GTK.BUTTON.GTK_BUTTON_RECORD'CLASS) is
+    
+    V_DRUM_SPIN_IMAGE : GTK.IMAGE.GTK_IMAGE;
+  
+  begin
+    
+    V_DRUM_SPIN_IMAGE := GTK.IMAGE.GTK_IMAGE_NEW_FROM_FILE (C_DRUM_SPIN_FILE);
+     
+    SELF.SET_IMAGE (V_DRUM_SPIN_IMAGE);
+     
+  end P_BUTTON_PRESSED;
+  
+  --==================================================================
+  
+  procedure P_BUTTON_RELEASED
+     (SELF : access GTK.BUTTON.GTK_BUTTON_RECORD'CLASS) is
+    
+    V_BOMBO_IMAGE : GTK.IMAGE.GTK_IMAGE;
+    
+  begin
+     
+    V_BOMBO_IMAGE := GTK.IMAGE.GTK_IMAGE_NEW_FROM_FILE (C_BOMBO_FILE);
+    
+    SELF.SET_IMAGE (V_BOMBO_IMAGE);
+     
+  end P_BUTTON_RELEASED;
   
   --==================================================================
   
@@ -413,6 +445,10 @@ package body Q_BINGADA is
         Q_MAIN_WINDOW_HANDLER.TO_MARSHALLER 
            (F_MAIN_WINDOW_BUTTON_PRESS'ACCESS));
 
+    V_BOMBO_BUTTON.ON_PRESSED (P_BUTTON_PRESSED'ACCESS);
+    
+    V_BOMBO_BUTTON.ON_RELEASED (P_BUTTON_RELEASED'ACCESS);
+     
     V_BOMBO_BUTTON.ON_CLICKED (P_BUTTON_CLICKED'ACCESS);
     
     V_BOMBO_IMAGE := GTK.IMAGE.GTK_IMAGE_NEW_FROM_FILE (C_BOMBO_FILE);
