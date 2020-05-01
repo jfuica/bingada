@@ -26,7 +26,6 @@ with GTK.ENUMS;
 with GTK.WIDGET;
 with GTK.IMAGE;
 with GTK.BUTTON;
-with GTK.LABEL;
 with GTK.MENU;
 with GTK.MENU_BAR;
 with GTK.MENU_ITEM;
@@ -60,6 +59,10 @@ package body Q_BINGADA is
 
   C_DRUM_SPIN_FILE : constant STRING := "drum_spin.png";
   
+  V_FIRST_BOMBO : POSITIVE := 1;
+  
+  V_BOMBO_BUTTON : GTK.BUTTON.GTK_BUTTON;
+    
   --==================================================================
   
   procedure P_LOAD_CSS is
@@ -89,8 +92,30 @@ package body Q_BINGADA is
   end P_LOAD_CSS;
 
   --=========================================================================
-
-  procedure P_MAIN_QUIT (SELF : access GTK.WIDGET.GTK_WIDGET_RECORD'Class) is
+  
+  function F_SWAP_BOMBO_IMAGE return STRING is
+    
+  begin
+    
+    if V_FIRST_BOMBO = 1 then
+      
+      V_FIRST_BOMBO := 2;
+      
+      return C_BOMBO_FILE;
+      
+    else
+      
+      V_FIRST_BOMBO := 1;
+      
+      return C_DRUM_SPIN_FILE;
+      
+    end if;
+    
+  end F_SWAP_BOMBO_IMAGE;
+  
+  --==================================================================
+  
+  procedure P_MAIN_QUIT (SELF : access GTK.WIDGET.GTK_WIDGET_RECORD'CLASS) is
     
     pragma UNREFERENCED (SELF);
     
@@ -156,31 +181,38 @@ package body Q_BINGADA is
       
     if V_CURRENT_INDEX > 2 then
       
-      GTK.LABEL.SET_MARKUP 
-         (GTK.LABEL.GTK_LABEL (GTK.BUTTON.GET_CHILD (V_PREVIOUS_NUMBER_1)), 
-          "<span face=""Sans Italic"" color=""red"" size=""large"" >" & 
-             F_GET_NUMBER 
-             (Q_BINGO.Q_BOMBO.F_GET_NUMBER (V_CURRENT_INDEX - 1)) & "</span>");
+      -- GTK.LABEL.SET_MARKUP 
+      --    (GTK.LABEL.GTK_LABEL (GTK.BUTTON.GET_CHILD (V_PREVIOUS_NUMBER_1)), 
+      --     "<span face=""Sans Italic"" color=""red"" size=""large"" >" & 
+      --        F_GET_NUMBER 
+      --        (Q_BINGO.Q_BOMBO.F_GET_NUMBER (V_CURRENT_INDEX - 1)) & "</span>");
+      
+      V_PREVIOUS_NUMBER_1.SET_LABEL 
+         (F_GET_NUMBER 
+             (Q_BINGO.Q_BOMBO.F_GET_NUMBER (V_CURRENT_INDEX - 1)));
+      
+      V_PREVIOUS_NUMBER_1.SET_NAME ("myButton_previous_1");
       
     end if;
     
     if V_CURRENT_INDEX > 3 then
       
-      GTK.LABEL.SET_MARKUP 
-         (GTK.LABEL.GTK_LABEL (GTK.BUTTON.GET_CHILD (V_PREVIOUS_NUMBER_2)), 
-          "<span face=""Sans Italic""color=""red"" size=""large"" >" & 
-             F_GET_NUMBER (Q_BINGO.Q_BOMBO.F_GET_NUMBER 
-                              (V_CURRENT_INDEX - 2)) & "</span>");
+      V_PREVIOUS_NUMBER_2.SET_LABEL 
+         (F_GET_NUMBER 
+             (Q_BINGO.Q_BOMBO.F_GET_NUMBER (V_CURRENT_INDEX - 2)));
+      
+      V_PREVIOUS_NUMBER_2.SET_NAME ("myButton_previous_2");
       
     end if;
     
     if V_CURRENT_INDEX > 4 then
       
-      GTK.LABEL.SET_MARKUP 
-         (GTK.LABEL.GTK_LABEL (GTK.BUTTON.GET_CHILD (V_PREVIOUS_NUMBER_3)), 
-          "<span face=""Sans Italic"" color=""red"" size=""large"" >" & 
-             F_GET_NUMBER (Q_BINGO.Q_BOMBO.F_GET_NUMBER 
-                              (V_CURRENT_INDEX - 3)) & "</span>");
+      V_PREVIOUS_NUMBER_3.SET_LABEL 
+         (F_GET_NUMBER 
+             (Q_BINGO.Q_BOMBO.F_GET_NUMBER (V_CURRENT_INDEX - 3)));
+      
+      V_PREVIOUS_NUMBER_3.SET_NAME ("myButton_previous_3");
+      
       
     end if;
     
@@ -228,10 +260,10 @@ package body Q_BINGADA is
   
   begin
     
-    V_DRUM_SPIN_IMAGE := GTK.IMAGE.GTK_IMAGE_NEW_FROM_FILE (C_DRUM_SPIN_FILE);
+    V_DRUM_SPIN_IMAGE := GTK.IMAGE.GTK_IMAGE_NEW_FROM_FILE (F_SWAP_BOMBO_IMAGE);
      
     SELF.SET_IMAGE (V_DRUM_SPIN_IMAGE);
-     
+    
   end P_BUTTON_PRESSED;
   
   --==================================================================
@@ -243,7 +275,7 @@ package body Q_BINGADA is
     
   begin
      
-    V_BOMBO_IMAGE := GTK.IMAGE.GTK_IMAGE_NEW_FROM_FILE (C_BOMBO_FILE);
+    V_BOMBO_IMAGE := GTK.IMAGE.GTK_IMAGE_NEW_FROM_FILE (F_SWAP_BOMBO_IMAGE);
     
     SELF.SET_IMAGE (V_BOMBO_IMAGE);
      
@@ -305,9 +337,26 @@ package body Q_BINGADA is
   
   V_TIMEOUT : GLIB.MAIN.G_SOURCE_ID;
   
+  V_SPIN_TIMEOUT : GLIB.MAIN.G_SOURCE_ID;
+  
   --==================================================================
   
-  function F_TIMEOUT_TEST (V_USER : T_WIDGETS_TO_UPDATE) return BOOLEAN is
+  function F_SWAP_BOMBO_IMAGE (V_USER : T_WIDGETS_TO_UPDATE) return BOOLEAN is
+    
+    pragma UNREFERENCED (V_USER);
+    
+  begin
+    
+    V_BOMBO_BUTTON.SET_IMAGE 
+       (GTK.IMAGE.GTK_IMAGE_NEW_FROM_FILE (F_SWAP_BOMBO_IMAGE));
+    
+    return TRUE;
+    
+  end F_SWAP_BOMBO_IMAGE;
+  
+  --==================================================================
+  
+  function F_SPIN_TIMEOUT (V_USER : T_WIDGETS_TO_UPDATE) return BOOLEAN is
     
     pragma UNREFERENCED (V_USER);
     
@@ -317,7 +366,7 @@ package body Q_BINGADA is
     
     return TRUE;
     
-  end F_TIMEOUT_TEST;
+  end F_SPIN_TIMEOUT;
   
   --==================================================================
   
@@ -325,11 +374,19 @@ package body Q_BINGADA is
     
   begin
     
+    V_SPIN_TIMEOUT := Q_TIMEOUT.TIMEOUT_ADD
+       (--  This timeout will refresh every 5sec
+        500,
+        --  This is the function to call in the timeout
+        F_SWAP_BOMBO_IMAGE'ACCESS,
+        --  This is the part of the GUI to refresh
+        V_NULL_RECORD);
+    
     V_TIMEOUT := Q_TIMEOUT.TIMEOUT_ADD
        (--  This timeout will refresh every 5sec
         6000,
         --  This is the function to call in the timeout
-        F_TIMEOUT_TEST'ACCESS,
+        F_SPIN_TIMEOUT'ACCESS,
         --  This is the part of the GUI to refresh
         V_NULL_RECORD);
       
@@ -345,7 +402,11 @@ package body Q_BINGADA is
       
       GLIB.MAIN.REMOVE (V_TIMEOUT);
       
+      GLIB.MAIN.REMOVE (V_SPIN_TIMEOUT);
+      
       V_TIMEOUT := 0;
+      
+      V_SPIN_TIMEOUT := 0;
       
     end if;
     
@@ -404,8 +465,6 @@ package body Q_BINGADA is
   --==================================================================
   
   procedure P_CREATE_UPPER_AREA (V_UPPER_AREA : out GTK.BOX.GTK_BOX) is
-    
-    V_BOMBO_BUTTON : GTK.BUTTON.GTK_BUTTON;
     
     V_BOMBO_IMAGE : GTK.IMAGE.GTK_IMAGE;
     
@@ -515,15 +574,8 @@ package body Q_BINGADA is
 
     V_ICON_ERROR : GLIB.ERROR.GERROR;
 
-    --V_HORIZONTAL_BOX_1 : GTK.BOX.GTK_BOX;
-    
   begin
     
-    -- Main_Window.Vbox.PACK_START
-    --    (CHILD  =>Menu_Bar,
-    --     EXPAND =>false,
-    --     FILL   =>false);
- 
     -- Create main window box
     --
     GTK.WINDOW.GTK_NEW (V_MAIN_WINDOW, GTK.ENUMS.WINDOW_TOPLEVEL);
@@ -550,10 +602,6 @@ package body Q_BINGADA is
     GTK.BOX.GTK_NEW_VBOX
        (BOX         => V_VERTICAL_BOX,
         HOMOGENEOUS => FALSE);
-    
-    --GTK.BOX.GTK_NEW_HBOX
-    --   (BOX         => V_HORIZONTAL_BOX_1,
-    --    HOMOGENEOUS => TRUE);
     
     GTK.WINDOW.ADD
        (V_MAIN_WINDOW,
@@ -596,7 +644,8 @@ package body Q_BINGADA is
     
     --  If there is no timeout registered to monitor the tasks,
     --  start one now!
-    if V_Timeout = 0 then
+    --
+    if V_TIMEOUT = 0 then
       
       P_START_TIMER;
       
@@ -607,7 +656,7 @@ package body Q_BINGADA is
   --==================================================================
   
   procedure P_PAUSE_BINGO 
-     (V_Object : access GTK.MENU_ITEM.GTK_MENU_ITEM_RECORD'Class) is
+     (V_OBJECT : access GTK.MENU_ITEM.GTK_MENU_ITEM_RECORD'CLASS) is
     
     pragma UNREFERENCED (V_Object);
     
@@ -906,7 +955,7 @@ package body Q_BINGADA is
   
   --[
   -- This is the main gtkada procedure.
-  -- It initialise the bingo's bombo and the GTKAda HMI.
+  -- It initialises the bingo's bombo and the GTKAda HMI.
   --]
   procedure P_CREATE_WIDGETS is
     

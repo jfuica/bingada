@@ -2,10 +2,6 @@ GtkButton {
     background-image: none;
 }
 
-#myChildTop {
-    background-color: white;
-}
-
 #myButton_white{
     background-color: white;
     color: red;
@@ -23,20 +19,41 @@ GtkButton {
     font-style: normal;
     font-weight: bold;
     font-size: xx-large;
-    border-radius: 0px;
 }
 
-#myButton_blue{
-    background-color: blue;
-    color: white;
+#myButton_previous_1{
+    background-color: lightgreen;
+    color: black;
     font-family: DejaVu Sans;
     font-style: normal;
     font-weight: bold;
     font-size: xx-large;
-    border-radius: 0px;
+    border-radius: 10px;
 }
 
-#myButton_green:hover,
-#myButton_blue:hover{
-   background-color: black;
+#myButton_previous_2{
+    background-color: lightblue;
+    color: black;
+    font-family: DejaVu Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: xx-large;
+    border-radius: 10px;
 }
+
+#myButton_previous_3{
+    background-color: grey;
+    color: black;
+    font-family: DejaVu Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: xx-large;
+    border-radius: 10px;
+}
+
+#myButton_white:hover,
+#myButton_blue:hover{
+   background-color: grey;
+   color: blue;
+}
+
