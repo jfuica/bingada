@@ -1,5 +1,4 @@
 # bingada
-=========
 
 Bingo application in GTKAda
 
@@ -12,31 +11,47 @@ The Bingo is fully functional, you can :
 
 - Play bingo manually, clicking in the bingo image button.
 
-- Play bingo automatically.
+- Play bingo automatically, using "Game > Autospin".
 
 - Stop/Start the bingo.
 
 - Check Cards. They are read from a file called bingo_cards.csv.
 
 
-#Linux/Windows Install
-=====================
+# Linux/Windows Install using GNAT Community Edition
 
-- Install de GNAT Community Edition for your windows version.
 
-- Install GTKAda Comunity Edition and set the default path where you installed
+- Install the GNAT Community Edition for your Operating System version.
+
+- Install GTKAda Community Edition and set the default path where you installed
   the gnat.
 
 - For gtkada I set C:/GNAT/2019/gtkada (The previous gnat path is needed to be
-set, because the gtkada needs to be compile).
+set, because the gtkada needs to be compiled).
 
 - You can open the gtkada.gpr file using GPS, or compile with gprbuild -p bingada
 
+Installation under Ubuntu 16.04 using FSF GNAT
+==============================================
 
-#Wishes / TODO
-==============
+- Install the following packages:
+```
+sudo apt install gprbuild gnat libgtkada16.1.0-dev
+```
+- Build with:
+```
+gprbuild -p bingada
+```
+- Run directly like this:
+```
+./obj/bingada
+```
+- Or you can install "bombo.png" and "bingada" to any location and run from there.
 
-The interface is really simple, and It could be improved, but, I think the main goals could be :
+# Wishes / TODO
+
+
+The interface is really simple, and it could be improved, but, I think the main goals could be :
 
 - Cards shown in a table.
 
