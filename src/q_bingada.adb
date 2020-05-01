@@ -17,6 +17,7 @@ with ADA.CONTAINERS;
 
 with GLIB.MAIN;
 with GLIB.ERROR;
+with GLIB.PROPERTIES;
 
 with GTK.BOX;
 with GTK.MAIN;
@@ -30,10 +31,14 @@ with GTK.MENU;
 with GTK.MENU_BAR;
 with GTK.MENU_ITEM;
 with GTK.HANDLERS;
+with GTK.SETTINGS;
+with GTK.STYLE_PROVIDER;
 
 with GDK.EVENT;
 with GDK.TYPES.KEYSYMS;
 with GDK.PIXBUF;
+
+with GTKADA.STYLE;
 
 with Q_BINGO.Q_BOMBO;
 with Q_BINGO_HELP;
@@ -55,6 +60,34 @@ package body Q_BINGADA is
 
   --==================================================================
   
+  procedure P_LOAD_CSS is
+    
+    C_COLOURS_CONF_FILENAME : constant STRING := "bingada.css";
+    
+  begin
+
+    -- Use this if you want to use Aero themes from Gnome
+    -- This is not recommended but can help if animation is requested.
+    -- In this case the .themes directory must exists in the home directory.
+    --      Glib.Properties.Set_Property
+    --             (Object    => Gtk.Settings.Get_Default,
+    --              Name      => Gtk.Settings.Gtk_Theme_Name,
+    --              Value     => "Aero");
+    
+    GLIB.PROPERTIES.SET_PROPERTY 
+       (OBJECT => GTK.SETTINGS.GET_DEFAULT, 
+        NAME   => GTK.SETTINGS.GTK_CURSOR_BLINK_PROPERTY, 
+        VALUE  => TRUE);
+    
+    GTKADA.STYLE.LOAD_CSS_FILE
+       (Path     => C_COLOURS_CONF_FILENAME,
+        Error    => TEXT_IO.PUT_LINE'ACCESS,
+        Priority => GTK.STYLE_PROVIDER.PRIORITY_APPLICATION);
+    
+  end P_LOAD_CSS;
+
+  --=========================================================================
+
   procedure P_MAIN_QUIT (SELF : access GTK.WIDGET.GTK_WIDGET_RECORD'Class) is
     
     pragma UNREFERENCED (SELF);
@@ -113,20 +146,11 @@ package body Q_BINGADA is
  
   begin
     
-    GTK.LABEL.SET_MARKUP 
-       (GTK.LABEL.GTK_LABEL
-           (GTK.BUTTON.GET_CHILD (V_BUTTON_ARRAY (C_NUMBER))), 
-        "<span face=""Sans Italic"" weight=""bold"" color=""blue"" " &
-           "size=""xx-large"" >" &  F_GET_NUMBER (C_NUMBER) & "</span>");
-      
-    V_BUTTON_ARRAY (C_NUMBER).SET_SENSITIVE (TRUE);
+    V_BUTTON_ARRAY (C_NUMBER).SET_NAME ("myButton_blue");
     
-    GTK.LABEL.SET_MARKUP 
-       (GTK.LABEL.GTK_LABEL (GTK.BUTTON.GET_CHILD (V_CURRENT_NUMBER)), 
-        "<span face=""Sans Italic"" weight=""bold"" color=""blue"" " &
-           "size=""xx-large"" >" & 
-           F_GET_NUMBER (Q_BINGO.Q_BOMBO.F_GET_NUMBER (V_CURRENT_INDEX)) & 
-           "</span>");
+    V_CURRENT_NUMBER.SET_NAME ("myButton_blue");
+    
+    V_CURRENT_NUMBER.SET_LABEL (F_GET_NUMBER (C_NUMBER));
       
     if V_CURRENT_INDEX > 2 then
       
@@ -223,12 +247,6 @@ package body Q_BINGADA is
         GTK.BUTTON.GTK_NEW 
            (V_BUTTON_ARRAY (V_INDEX), LABEL => F_GET_NUMBER (V_INDEX));
         
-        GTK.LABEL.SET_MARKUP 
-           (GTK.LABEL.GTK_LABEL 
-               (GTK.BUTTON.GET_CHILD (V_BUTTON_ARRAY (V_INDEX))), 
-            "<span face=""Sans"" weight=""bold"" color=""red"" size=""xx-large"" >" & 
-               F_GET_NUMBER (V_INDEX) & "</span>");
-        
         V_BUTTON_ARRAY (V_INDEX).SET_SENSITIVE (FALSE);
         
         GTK.BOX.PACK_START
@@ -277,7 +295,7 @@ package body Q_BINGADA is
     
     V_TIMEOUT := Q_TIMEOUT.TIMEOUT_ADD
        (--  This timeout will refresh every 5sec
-        5000,
+        6000,
         --  This is the function to call in the timeout
         F_TIMEOUT_TEST'ACCESS,
         --  This is the part of the GUI to refresh
@@ -375,11 +393,19 @@ package body Q_BINGADA is
     
     GTK.BUTTON.GTK_NEW (V_CURRENT_NUMBER, LABEL => C_NULL_NUMBER_IMAGE);
     
+    V_CURRENT_NUMBER.SET_SENSITIVE (FALSE);
+
     GTK.BUTTON.GTK_NEW (V_PREVIOUS_NUMBER_1, LABEL => C_NULL_NUMBER_IMAGE);
+    
+    V_PREVIOUS_NUMBER_1.SET_SENSITIVE (FALSE);
     
     GTK.BUTTON.GTK_NEW (V_PREVIOUS_NUMBER_2, LABEL => C_NULL_NUMBER_IMAGE);
     
+    V_PREVIOUS_NUMBER_2.SET_SENSITIVE (FALSE);
+    
     GTK.BUTTON.GTK_NEW (V_PREVIOUS_NUMBER_3, LABEL => C_NULL_NUMBER_IMAGE);
+    
+    V_PREVIOUS_NUMBER_3.SET_SENSITIVE (FALSE);
     
     Q_MAIN_WINDOW_HANDLER.CONNECT
        (V_BOMBO_BUTTON,
@@ -675,13 +701,11 @@ package body Q_BINGADA is
     
     for I in 1 .. C_MAX_BUTTONS loop
       
-      GTK.LABEL.SET_MARKUP 
-         (GTK.LABEL.GTK_LABEL 
-             (GTK.BUTTON.GET_CHILD (V_BUTTON_ARRAY (I))), 
-          "<span face=""Sans"" weight=""bold"" color=""red"" size=""xx-large"" >" & 
-             F_GET_NUMBER (I) & "</span>");
-     
+      V_BUTTON_ARRAY (I).SET_NAME ("myButton_white");
+
     end loop;
+    
+    V_CURRENT_NUMBER.SET_NAME ("current");
     
     V_CURRENT_NUMBER.SET_LABEL (C_NULL_NUMBER_IMAGE);
     
@@ -860,9 +884,7 @@ package body Q_BINGADA is
        
   begin
     
-    -- Initialise bombo numbers.
-    --
-    Q_BINGO.Q_BOMBO.P_INIT;
+    P_LOAD_CSS;
     
     P_CREATE_UPPER_AREA (V_UPPER_AREA => V_UPPER_AREA);
     
@@ -880,6 +902,10 @@ package body Q_BINGADA is
         "key_press_event",
         Q_MAIN_WINDOW_HANDLER.TO_MARSHALLER 
            (F_MAIN_WINDOW_BUTTON_PRESS'ACCESS));
+    
+    -- Initialise bombo numbers.
+    --
+    P_INIT_BINGO;
     
     V_MAIN_WINDOW.ON_DESTROY (P_MAIN_QUIT'ACCESS);
     
