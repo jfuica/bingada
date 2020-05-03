@@ -38,10 +38,12 @@ with GDK.TYPES.KEYSYMS;
 with GDK.PIXBUF;
 
 with GTKADA.STYLE;
+with GTKADA.INTL;
 
 with Q_BINGO.Q_BOMBO;
 with Q_BINGO_HELP;
 with Q_CSV.Q_READ_FILE;
+with Q_BINGO.Q_GTK.Q_INTL;
 
 package body Q_BINGADA is
   
@@ -52,8 +54,6 @@ package body Q_BINGADA is
   --==================================================================
   
   C_NULL_NUMBER_IMAGE : constant STRING := " ";
-  
-  C_EXIT_MESSAGE : constant STRING := "Hasta la vista!";
   
   C_BOMBO_FILE : constant STRING := "bombo.png";
 
@@ -121,7 +121,7 @@ package body Q_BINGADA is
     
   begin
     
-    TEXT_IO.PUT_LINE (C_EXIT_MESSAGE);
+    TEXT_IO.PUT_LINE (GTKADA.INTL."-" ("exit_message"));
     
     GTK.MAIN.MAIN_QUIT;
     
@@ -452,7 +452,8 @@ package body Q_BINGADA is
     --       GDK.TYPES.GDK_KEY_TYPE'IMAGE (GDK.EVENT.GET_KEY_VAL (V_EVENT)));
         
     if C_KEY_VAL = GDK.TYPES.KEYSYMS.GDK_LC_s or else
-       C_KEY_VAL = GDK.TYPES.KEYSYMS.GDK_S then
+       C_KEY_VAL = GDK.TYPES.KEYSYMS.GDK_S or else
+       C_KEY_VAL = GDK.TYPES.KEYSYMS.GDK_SPACE then
       
       P_START_PAUSE_BINGO;
           
@@ -858,19 +859,26 @@ package body Q_BINGADA is
     
     --  Creates GAME menu submenus
     --
-    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC (V_NEW_GAME, "_NewGame");
+    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC 
+       (V_NEW_GAME, "_" & GTKADA.INTL."-" ("menu_new_game"));
     
-    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC (V_AUTO_START, "_Auto_spin");
+    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC 
+       (V_AUTO_START, "_" & GTKADA.INTL."-" ("menu_auto_spin"));
     
-    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC (V_PAUSE, "_Pause");
+    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC 
+       (V_PAUSE, "_" & GTKADA.INTL."-" ("menu_pause"));
     
-    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC (V_CHECK_CARDS, "_Check Cards");
+    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC 
+       (V_CHECK_CARDS, "_" & GTKADA.INTL."-" ("menu_check_cards"));
 
-    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC (V_EXIT, "_Exit");
+    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC 
+       (V_EXIT, "_" & GTKADA.INTL."-" ("menu_exit"));
     
-    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC (V_HELP, "_Help");
+    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC 
+       (V_HELP, "_" & GTKADA.INTL."-" ("menu_help"));
     
-    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC (V_GAME_MENU_ITEM, "_Game");
+    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC 
+       (V_GAME_MENU_ITEM, "_" & GTKADA.INTL."-" ("main_menu"));
     
     -- Creates the menu called game
     --
@@ -968,6 +976,8 @@ package body Q_BINGADA is
     V_MENU_BAR : GTK.MENU_BAR.GTK_MENU_BAR;
        
   begin
+    
+    Q_BINGO.Q_GTK.Q_INTL.P_INITIALISE;
     
     P_LOAD_CSS;
     

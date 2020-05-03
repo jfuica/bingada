@@ -1,0 +1,25 @@
+#bingada-en.po
+
+msgid "exit_message"
+msgstr "Hasta la vista!"
+
+msgid "menu_new_game"
+msgstr "New Game"
+
+msgid "menu_auto_spin"
+msgstr "Auto Spin"
+
+msgid "menu_pause"
+msgstr "Pause"
+
+msgid "menu_check_cards"
+msgstr "Check Cards"
+
+msgid "menu_exit"
+msgstr "Exit"
+
+msgid "menu_help"
+msgstr "Help"
+
+msgid "main_menu"
+msgstr "Game"
