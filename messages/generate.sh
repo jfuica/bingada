@@ -1,3 +1,5 @@
+#!/bin/bash
+
 for i in $(ls *.po)
 do
   language=$(echo $i | sed -e 's/^bingada-//' -e 's/\.po//');

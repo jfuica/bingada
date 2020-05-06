@@ -38,7 +38,7 @@ with GDK.TYPES.KEYSYMS;
 with GDK.PIXBUF;
 
 with GTKADA.STYLE;
-with GTKADA.INTL;
+with GTKADA.INTL; use GTKADA.INTL;
 
 with Q_BINGO.Q_BOMBO;
 with Q_BINGO_HELP;
@@ -121,7 +121,7 @@ package body Q_BINGADA is
     
   begin
     
-    TEXT_IO.PUT_LINE (GTKADA.INTL."-" ("exit_message"));
+    TEXT_IO.PUT_LINE (-"exit_message");
     
     GTK.MAIN.MAIN_QUIT;
     
@@ -860,25 +860,25 @@ package body Q_BINGADA is
     --  Creates GAME menu submenus
     --
     GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC 
-       (V_NEW_GAME, "_" & GTKADA.INTL."-" ("menu_new_game"));
+       (V_NEW_GAME, -"menu_new_game");
     
     GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC 
-       (V_AUTO_START, "_" & GTKADA.INTL."-" ("menu_auto_spin"));
+       (V_AUTO_START, -"menu_auto_spin");
     
     GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC 
-       (V_PAUSE, "_" & GTKADA.INTL."-" ("menu_pause"));
+       (V_PAUSE, -"menu_pause");
     
     GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC 
-       (V_CHECK_CARDS, "_" & GTKADA.INTL."-" ("menu_check_cards"));
+       (V_CHECK_CARDS, -"menu_check_cards");
 
     GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC 
-       (V_EXIT, "_" & GTKADA.INTL."-" ("menu_exit"));
+       (V_EXIT, -"menu_exit");
     
     GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC 
-       (V_HELP, "_" & GTKADA.INTL."-" ("menu_help"));
+       (V_HELP, -"menu_help");
     
     GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC 
-       (V_GAME_MENU_ITEM, "_" & GTKADA.INTL."-" ("main_menu"));
+       (V_GAME_MENU_ITEM, -"main_menu");
     
     -- Creates the menu called game
     --

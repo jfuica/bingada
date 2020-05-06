@@ -4,22 +4,22 @@ msgid "exit_message"
 msgstr "Hasta la vista!"
 
 msgid "menu_new_game"
-msgstr "New Game"
+msgstr "_New Game"
 
 msgid "menu_auto_spin"
-msgstr "Auto Spin"
+msgstr "_Auto Spin"
 
 msgid "menu_pause"
-msgstr "Pause"
+msgstr "_Pause"
 
 msgid "menu_check_cards"
-msgstr "Check Cards"
+msgstr "_Check Cards"
 
 msgid "menu_exit"
-msgstr "Exit"
+msgstr "E_xit"
 
 msgid "menu_help"
-msgstr "Help"
+msgstr "_Help"
 
 msgid "main_menu"
-msgstr "Game"
+msgstr "_Game"

@@ -4,22 +4,22 @@ msgid "exit_message"
 msgstr "Auf Wiedersehen!"
 
 msgid "menu_new_game"
-msgstr "Neues Spiel"
+msgstr "_Neues Spiel"
 
 msgid "menu_auto_spin"
-msgstr "Automatische Drehung"
+msgstr "_Automatische Drehung"
 
 msgid "menu_pause"
-msgstr "Pausieren"
+msgstr "_Pausieren"
 
 msgid "menu_check_cards"
-msgstr "Karten prüfen"
+msgstr "_Karten prüfen"
 
 msgid "menu_exit"
-msgstr "Beenden"
+msgstr "_Beenden"
 
 msgid "menu_help"
-msgstr "Hilfe"
+msgstr "_Hilfe"
 
 msgid "main_menu"
-msgstr "Spiel"
+msgstr "_Spiel"
