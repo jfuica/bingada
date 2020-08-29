@@ -17,9 +17,24 @@ The Bingo is fully functional, you can :
 
 - Check Cards. They are read from a file called bingo_cards.csv.
 
+- Translations: English, Spanish, German.
+
+# Dependencies
+
+- GTKAda: independently installed
+- canberra-ada: used as a git submodule
+
+In order to build libcanberra (instructions for Linux):
+
+```
+git clone --recursive https://github.com/jfuica/bingada
+cd libs/libcanberra
+make
+```
+
+Required packages are listed in https://github.com/onox/canberra-ada
 
 # Linux/Windows Install using GNAT Community Edition
-
 
 - Install the GNAT Community Edition for your Operating System version.
 
@@ -31,8 +46,7 @@ set, because the gtkada needs to be compiled).
 
 - You can open the gtkada.gpr file using GPS, or compile with gprbuild -p bingada
 
-Installation under Ubuntu 16.04 using FSF GNAT
-==============================================
+# Installation under Ubuntu 16.04 using FSF GNAT
 
 - Install the following packages:
 ```
