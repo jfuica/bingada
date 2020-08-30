@@ -1,5 +1,6 @@
 --with "/opt/COTS/gtkada-2019/lib/gnat/gtkada";
 with "gtkada.gpr";
+with "libs/canberra-ada/tools/canberra.gpr";
 
 project bingada is
 

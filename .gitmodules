@@ -1,0 +1,3 @@
+[submodule "libs/canberra-ada"]
+	path = libs/canberra-ada
+	url = https://github.com/onox/canberra-ada

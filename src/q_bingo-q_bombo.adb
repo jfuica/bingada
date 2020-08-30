@@ -10,6 +10,10 @@
 
 with Q_GEN_SHUFFLE;
 
+-- Sound library
+--
+with CANBERRA;
+
 package body Q_BINGO.Q_BOMBO is
   
   --==================================================================
@@ -22,9 +26,14 @@ package body Q_BINGO.Q_BOMBO is
      (ELEMENT_TYPE => T_NUMBER,
       C_MAX_NUMBER => T_NUMBER'LAST);
    
-   V_BINGO_ARRAY : Q_SHUFFLE.ARRAY_TYPE;
-   
-   --==================================================================
+  V_BINGO_ARRAY : Q_SHUFFLE.ARRAY_TYPE;
+
+  V_CONTEXT : CANBERRA.CONTEXT := CANBERRA.CREATE
+     (NAME => "BingAda",
+      ID   => "bingada.lovelace",
+      ICON => "applications-games");
+
+  --==================================================================
    
   procedure P_INIT is
     
@@ -39,7 +48,7 @@ package body Q_BINGO.Q_BOMBO is
     Q_SHUFFLE.P_SHUFFLE (LIST => V_BINGO_ARRAY);
     
     V_INDEX := 1;
-    
+
   end P_INIT;
   
   --==================================================================
@@ -47,6 +56,8 @@ package body Q_BINGO.Q_BOMBO is
   procedure P_SPIN (V_NUMBER        : out POSITIVE;
                     V_CURRENT_INDEX : out T_NUMBER;
                     V_LAST_NUMBER   : out BOOLEAN) is
+     
+    V_SOUND : CANBERRA.SOUND;
     
   begin
     
@@ -70,6 +81,8 @@ package body Q_BINGO.Q_BOMBO is
       
     end if;
     
+    V_CONTEXT.PLAY ("bell-window-system", V_SOUND, CANBERRA.MUSIC, "Spin");
+   
   end P_SPIN;
   
   --==================================================================
