@@ -103,13 +103,13 @@ package body Q_BINGO.Q_BOMBO is
     else
 
       V_NUMBER := V_BINGO_ARRAY (V_INDEX);
-      
-      V_INDEX := V_INDEX + 1;
-      
-      V_LAST_NUMBER := FALSE;
-      
+
       V_CURRENT_INDEX := V_INDEX;
-      
+
+      V_INDEX := V_INDEX + 1;
+
+      V_LAST_NUMBER := FALSE;
+
     end if;
 
     P_PLAY_NUMBER (V_Bingo_Array(V_Current_Index));
