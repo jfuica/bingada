@@ -17,7 +17,11 @@ The Bingo is fully functional, you can :
 
 - Check Cards. They are read from a file called bingo_cards.csv.
 
+- Playback of the numbers (better recordings are needed)
+
 - Translations: English, Spanish, German.
+
+- Colors configurable using bingada.css
 
 # Dependencies
 
@@ -60,7 +64,7 @@ gprbuild -p bingada
 ```
 ./obj/bingada
 ```
-- Or you can install "bombo.png" and "bingada" to any location and run from there.
+- Or you can install "bombo.png", "media" directory, bingada.css and "bingada" to any location and run from there.
 
 # Wishes / TODO
 
@@ -69,13 +73,15 @@ The interface is really simple, and it could be improved, but, I think the main 
 
 - Cards shown in a table.
 
-- Use soundcard to hear the Numbers.
+- Get better recording of numbers for each language
 
 - Include status message (Stop/start..)
 
-- Configure Colors with colors.css
-
 - Configure Other options.
 
+# Attribution
 
+Audio recordings of numbers have been obtained from Wikimedia Commons:
 
+https://commons.wikimedia.org/wiki/Category:English_pronunciation_of_numbers
+https://commons.wikimedia.org/wiki/Category:German_pronunciation_of_numbers
