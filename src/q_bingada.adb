@@ -515,6 +515,8 @@ package body Q_BINGADA is
     
     V_BOMBO_BUTTON.SET_IMAGE (IMAGE => V_BOMBO_IMAGE);
 
+    V_BOMBO_BUTTON.Set_Name ("drum_button");
+
     GTK.BOX.PACK_START
        (IN_BOX => V_UPPER_AREA,
         CHILD  => V_BOMBO_BUTTON);
