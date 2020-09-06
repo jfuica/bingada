@@ -2,7 +2,8 @@ GtkButton {
     background-image: none;
 }
 
-#myButton_white{
+#myButton_white,
+#myButton_white > label {
     background-color: white;
     color: red;
     font-family: DejaVu Sans;
@@ -12,7 +13,8 @@ GtkButton {
     border-radius: 0px;
 }
 
-#myButton_blue{
+#myButton_blue,
+#myButton_blue > label {
     background-color: blue;
     color: white;
     font-family: DejaVu Sans;
@@ -21,7 +23,8 @@ GtkButton {
     font-size: xx-large;
 }
 
-#myButton_previous_1{
+#myButton_previous_1,
+#myButton_previous_1 > label {
     background-color: lightgreen;
     color: black;
     font-family: DejaVu Sans;
@@ -31,7 +34,8 @@ GtkButton {
     border-radius: 10px;
 }
 
-#myButton_previous_2{
+#myButton_previous_2,
+#myButton_previous_2 > label {
     background-color: lightblue;
     color: black;
     font-family: DejaVu Sans;
@@ -41,7 +45,8 @@ GtkButton {
     border-radius: 10px;
 }
 
-#myButton_previous_3{
+#myButton_previous_3,
+#myButton_previous_3 > label {
     background-color: grey;
     color: black;
     font-family: DejaVu Sans;
@@ -57,3 +62,6 @@ GtkButton {
    color: blue;
 }
 
+#drum_button {
+     background-color: white;
+}
