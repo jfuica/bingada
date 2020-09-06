@@ -179,7 +179,7 @@ package body Q_BINGADA is
     
     V_CURRENT_NUMBER.SET_LABEL (F_GET_NUMBER (C_NUMBER));
       
-    if V_CURRENT_INDEX > 2 then
+    if V_CURRENT_INDEX > 1 then
       
       -- GTK.LABEL.SET_MARKUP 
       --    (GTK.LABEL.GTK_LABEL (GTK.BUTTON.GET_CHILD (V_PREVIOUS_NUMBER_1)), 
@@ -195,7 +195,7 @@ package body Q_BINGADA is
       
     end if;
     
-    if V_CURRENT_INDEX > 3 then
+    if V_CURRENT_INDEX > 2 then
       
       V_PREVIOUS_NUMBER_2.SET_LABEL 
          (F_GET_NUMBER 
@@ -205,7 +205,7 @@ package body Q_BINGADA is
       
     end if;
     
-    if V_CURRENT_INDEX > 4 then
+    if V_CURRENT_INDEX > 3 then
       
       V_PREVIOUS_NUMBER_3.SET_LABEL 
          (F_GET_NUMBER 
