@@ -1,3 +1,4 @@
+![Ada (GNAT)](https://github.com/jfuica/bingada/workflows/Ada%20(GNAT)/badge.svg)
 ![BingAda](https://raw.githubusercontent.com/jfuica/bingada/master/bombo.png "BingAda icon")
 
 # bingada
