@@ -22,8 +22,8 @@ jobs:
 
     - name: Build
       run: >
-        cd libs/canberra-ada && 
-        make &&
-        cd ../.. &&
+        cd libs/canberra-ada
+        make
+        cd ../..
         gprbuild -j0 -p
 
