@@ -1,3 +1,5 @@
+![BingAda](https://raw.githubusercontent.com/jfuica/bingada/master/bombo.png "BingAda icon")
+
 # bingada
 
 Bingo application in GTKAda
@@ -32,7 +34,7 @@ In order to build libcanberra (instructions for Linux):
 
 ```
 git clone --recursive https://github.com/jfuica/bingada
-cd libs/libcanberra
+cd libs/canberra-ada
 make
 ```
 
@@ -83,5 +85,5 @@ The interface is really simple, and it could be improved, but, I think the main 
 
 Audio recordings of numbers have been obtained from Wikimedia Commons:
 
-https://commons.wikimedia.org/wiki/Category:English_pronunciation_of_numbers
-https://commons.wikimedia.org/wiki/Category:German_pronunciation_of_numbers
+- https://commons.wikimedia.org/wiki/Category:English_pronunciation_of_numbers
+- https://commons.wikimedia.org/wiki/Category:German_pronunciation_of_numbers
