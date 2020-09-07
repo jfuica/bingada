@@ -14,7 +14,10 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-
+      
+    - name: Checkout submodules
+      uses: textbook/git-checkout-submodule-action@master
+  
     - name: Set up GNAT toolchain and libraries
       run: >
         sudo apt-get update && 
@@ -22,8 +25,8 @@ jobs:
 
     - name: Build
       run: >
-        cd libs/canberra-ada
-        make
-        cd ../..
+        cd libs/canberra-ada &&
+        make &&
+        cd ../.. &&
         gprbuild -j0 -p
 
