@@ -42,7 +42,7 @@ package body Q_BINGO_HELP is
        (V_Dialog, 
         (1 => new String'("Javier Fuica Fernandez <jafuica@gmail.com>")));
     
-    GTK.ABOUT_DIALOG.Set_Comments (V_Dialog, "Comment about the application");
+    GTK.ABOUT_DIALOG.Set_Comments (V_Dialog, "Bingo application in GTKAda");
     
     GTK.ABOUT_DIALOG.SET_LICENSE
        (V_Dialog,

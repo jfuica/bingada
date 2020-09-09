@@ -593,9 +593,8 @@ package body Q_BINGADA is
        FILENAME => C_BOMBO_FILE,
        ERROR    => V_ICON_ERROR);
 
-    GTK.WINDOW.SET_ICON
-      (WINDOW => V_MAIN_WINDOW,
-       ICON   => V_BOMBO_ICON);
+    GTK.WINDOW.Set_Default_Icon
+      (ICON   => V_BOMBO_ICON);
 
     -- |--- Vertical BOX |
     -- |                 |
