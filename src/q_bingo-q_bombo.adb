@@ -78,22 +78,11 @@ package body Q_BINGO.Q_BOMBO is
   --==================================================================
 
   function F_GET_NUMBER (V_INDEX : T_NUMBER) return T_NUMBER is
-
-  begin
-
-    return V_BINGO_ARRAY (V_INDEX);
-
-  end F_GET_NUMBER;
+     (V_BINGO_ARRAY (V_INDEX));
 
   --==================================================================
 
-  function F_GET_CURRENT_INDEX return T_NUMBER is
-
-  begin
-
-    return V_INDEX;
-
-  end F_GET_CURRENT_INDEX;
+  function F_GET_CURRENT_INDEX return T_NUMBER is (V_Index);
 
   --==================================================================
 

@@ -451,9 +451,9 @@ package body Q_BINGADA is
     --       (GDK.EVENT.GET_BUTTON (V_EVENT)) & " key val " &
     --       GDK.TYPES.GDK_KEY_TYPE'IMAGE (GDK.EVENT.GET_KEY_VAL (V_EVENT)));
         
-    if C_KEY_VAL = GDK.TYPES.KEYSYMS.GDK_LC_s or else
-       C_KEY_VAL = GDK.TYPES.KEYSYMS.GDK_S or else
-       C_KEY_VAL = GDK.TYPES.KEYSYMS.GDK_SPACE then
+    if C_KEY_VAL in GDK.TYPES.KEYSYMS.GDK_LC_s |
+       GDK.TYPES.KEYSYMS.GDK_S |
+       GDK.TYPES.KEYSYMS.GDK_SPACE then
       
       P_START_PAUSE_BINGO;
           
@@ -700,9 +700,9 @@ package body Q_BINGADA is
     
   begin
     
-    for I in V_CARD.R_NUMBERS'RANGE loop
+    for V_Number of V_CARD.R_NUMBERS loop
       
-      V_ALL_MARKED_OFF := F_IS_NUMBER_MARKED_OFF (V_CARD.R_NUMBERS (I));
+      V_ALL_MARKED_OFF := F_IS_NUMBER_MARKED_OFF (V_Number);
       
       exit when not V_ALL_MARKED_OFF;
       
@@ -786,9 +786,9 @@ package body Q_BINGADA is
     
     Q_BINGO.Q_BOMBO.P_INIT;
     
-    for I in 1 .. C_MAX_BUTTONS loop
+    for V_Button of V_Button_Array loop
       
-      V_BUTTON_ARRAY (I).SET_NAME ("myButton_white");
+      V_BUTTON.SET_NAME ("myButton_white");
 
     end loop;
     

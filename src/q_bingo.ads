@@ -8,7 +8,7 @@
 --*
 --*****************************************************************************
 
-package Q_BINGO is
+package Q_BINGO with Pure is
   
   C_LAST_NUMBER : constant := 90;
   
