@@ -8,8 +8,8 @@
 --*
 --*****************************************************************************
 
-package Q_BINGADA is
+package Q_Bingada is
 
-  procedure P_CREATE_WIDGETS;
+  procedure P_Create_Widgets;
 
-end Q_BINGADA;
+end Q_Bingada;

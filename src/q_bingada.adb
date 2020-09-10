@@ -9,65 +9,65 @@
 --*****************************************************************************
 
 
-with TEXT_IO;
+with Text_Io;
 
-with ADA.STRINGS.FIXED;
-with ADA.CONTAINERS;
+with Ada.Strings.Fixed;
+with Ada.Containers;
 
 
-with GLIB.MAIN;
-with GLIB.ERROR;
-with GLIB.PROPERTIES;
+with Glib.Main;
+with Glib.Error;
+with Glib.Properties;
 
-with GTK.BOX;
-with GTK.MAIN;
-with GTK.WINDOW;
-with GTK.ENUMS;
-with GTK.WIDGET;
-with GTK.IMAGE;
-with GTK.BUTTON;
-with GTK.MENU;
-with GTK.MENU_BAR;
-with GTK.MENU_ITEM;
-with GTK.HANDLERS;
-with GTK.SETTINGS;
-with GTK.STYLE_PROVIDER;
+with Gtk.Box;
+with Gtk.Main;
+with Gtk.Window;
+with Gtk.Enums;
+with Gtk.Widget;
+with Gtk.Image;
+with Gtk.Button;
+with Gtk.Menu;
+with Gtk.Menu_Bar;
+with Gtk.Menu_Item;
+with Gtk.Handlers;
+with Gtk.Settings;
+with Gtk.Style_Provider;
 
-with GDK.EVENT;
-with GDK.TYPES.KEYSYMS;
-with GDK.PIXBUF;
+with Gdk.Event;
+with Gdk.Types.Keysyms;
+with Gdk.Pixbuf;
 
-with GTKADA.STYLE;
-with GTKADA.INTL; use GTKADA.INTL;
+with Gtkada.Style;
+with Gtkada.Intl; use Gtkada.Intl;
 
-with Q_BINGO.Q_BOMBO;
-with Q_BINGO_HELP;
-with Q_CSV.Q_READ_FILE;
-with Q_BINGO.Q_GTK.Q_INTL;
+with Q_Bingo.Q_Bombo;
+with Q_Bingo_Help;
+with Q_Csv.Q_Read_File;
+with Q_Bingo.Q_Gtk.Q_Intl;
 
-package body Q_BINGADA is
+package body Q_Bingada is
 
-  use type GLIB.MAIN.G_SOURCE_ID;
-  use type GLIB.GUINT;
-  use type GDK.TYPES.GDK_KEY_TYPE;
-
-  --==================================================================
-
-  C_NULL_NUMBER_IMAGE : constant STRING := " ";
-
-  C_BOMBO_FILE : constant STRING := "bombo.png";
-
-  C_DRUM_SPIN_FILE : constant STRING := "drum_spin.png";
-
-  V_FIRST_BOMBO : POSITIVE := 1;
-
-  V_BOMBO_BUTTON : GTK.BUTTON.GTK_BUTTON;
+  use type Glib.Main.G_Source_Id;
+  use type Glib.Guint;
+  use type Gdk.Types.Gdk_Key_Type;
 
   --==================================================================
 
-  procedure P_LOAD_CSS is
+  C_Null_Number_Image : constant String := " ";
 
-    C_COLOURS_CONF_FILENAME : constant STRING := "bingada.css";
+  C_Bombo_File : constant String := "bombo.png";
+
+  C_Drum_Spin_File : constant String := "drum_spin.png";
+
+  V_First_Bombo : Positive := 1;
+
+  V_Bombo_Button : Gtk.Button.Gtk_Button;
+
+  --==================================================================
+
+  procedure P_Load_Css is
+
+    C_Colours_Conf_Filename : constant String := "bingada.css";
 
   begin
 
@@ -79,107 +79,107 @@ package body Q_BINGADA is
     --              Name      => Gtk.Settings.Gtk_Theme_Name,
     --              Value     => "Aero");
 
-    GLIB.PROPERTIES.SET_PROPERTY
-       (OBJECT => GTK.SETTINGS.GET_DEFAULT,
-        NAME   => GTK.SETTINGS.GTK_CURSOR_BLINK_PROPERTY,
-        VALUE  => TRUE);
+    Glib.Properties.Set_Property
+       (Object => Gtk.Settings.Get_Default,
+        Name   => Gtk.Settings.Gtk_Cursor_Blink_Property,
+        Value  => True);
 
-    GTKADA.STYLE.LOAD_CSS_FILE
-       (Path     => C_COLOURS_CONF_FILENAME,
-        Error    => TEXT_IO.PUT_LINE'ACCESS,
-        Priority => GTK.STYLE_PROVIDER.PRIORITY_APPLICATION);
+    Gtkada.Style.Load_Css_File
+       (Path     => C_Colours_Conf_Filename,
+        Error    => Text_Io.Put_Line'Access,
+        Priority => Gtk.Style_Provider.Priority_Application);
 
-  end P_LOAD_CSS;
+  end P_Load_Css;
 
   --=========================================================================
 
-  function F_SWAP_BOMBO_IMAGE return STRING is
+  function F_Swap_Bombo_Image return String is
 
   begin
 
-    if V_FIRST_BOMBO = 1 then
+    if V_First_Bombo = 1 then
 
-      V_FIRST_BOMBO := 2;
+      V_First_Bombo := 2;
 
-      return C_BOMBO_FILE;
+      return C_Bombo_File;
 
     else
 
-      V_FIRST_BOMBO := 1;
+      V_First_Bombo := 1;
 
-      return C_DRUM_SPIN_FILE;
+      return C_Drum_Spin_File;
 
     end if;
 
-  end F_SWAP_BOMBO_IMAGE;
+  end F_Swap_Bombo_Image;
 
   --==================================================================
 
-  procedure P_MAIN_QUIT (SELF : access GTK.WIDGET.GTK_WIDGET_RECORD'CLASS) is
+  procedure P_Main_Quit (Self : access Gtk.Widget.Gtk_Widget_Record'Class) is
 
-    pragma UNREFERENCED (SELF);
+    pragma Unreferenced (Self);
 
   begin
 
-    TEXT_IO.PUT_LINE (-"exit_message");
+    Text_Io.Put_Line (-"exit_message");
 
-    GTK.MAIN.MAIN_QUIT;
+    Gtk.Main.Main_Quit;
 
-  end P_MAIN_QUIT;
-
-  --==================================================================
-
-  V_CURRENT_NUMBER : GTK.BUTTON.GTK_BUTTON;
-
-  V_PREVIOUS_NUMBER_1 : GTK.BUTTON.GTK_BUTTON;
-
-  V_PREVIOUS_NUMBER_2 : GTK.BUTTON.GTK_BUTTON;
-
-  V_PREVIOUS_NUMBER_3 : GTK.BUTTON.GTK_BUTTON;
-
-  C_MAX_BUTTONS : constant := Q_BINGO.C_LAST_NUMBER;
-
-  type T_BUTTONS_ARRAY is array (1 .. C_MAX_BUTTONS) of GTK.BUTTON.GTK_BUTTON;
-
-  V_BUTTON_ARRAY : T_BUTTONS_ARRAY;
+  end P_Main_Quit;
 
   --==================================================================
 
-  function F_GET_NUMBER (V_INDEX : POSITIVE) return STRING is
+  V_Current_Number : Gtk.Button.Gtk_Button;
+
+  V_Previous_Number_1 : Gtk.Button.Gtk_Button;
+
+  V_Previous_Number_2 : Gtk.Button.Gtk_Button;
+
+  V_Previous_Number_3 : Gtk.Button.Gtk_Button;
+
+  C_Max_Buttons : constant := Q_Bingo.C_Last_Number;
+
+  type T_Buttons_Array is array (1 .. C_Max_Buttons) of Gtk.Button.Gtk_Button;
+
+  V_Button_Array : T_Buttons_Array;
+
+  --==================================================================
+
+  function F_Get_Number (V_Index : Positive) return String is
 
   begin
 
-    if V_INDEX < 10 then
+    if V_Index < 10 then
 
-      return " " & ADA.STRINGS.FIXED.TRIM (SOURCE => V_INDEX'IMAGE,
-                                           SIDE   => ADA.STRINGS.BOTH);
+      return " " & Ada.Strings.Fixed.Trim (Source => V_Index'Image,
+                                           Side   => Ada.Strings.Both);
 
     else
 
-      return ADA.STRINGS.FIXED.TRIM (SOURCE => V_INDEX'IMAGE,
-                                     SIDE   => ADA.STRINGS.BOTH);
+      return Ada.Strings.Fixed.Trim (Source => V_Index'Image,
+                                     Side   => Ada.Strings.Both);
 
     end if;
 
-  end F_GET_NUMBER;
+  end F_Get_Number;
 
   --==================================================================
 
-  procedure P_SET_CURRENT_AND_PREVIOUS_NUMBERS
-     (V_CURRENT_INDEX : Q_BINGO.T_NUMBER) is
+  procedure P_Set_Current_And_Previous_Numbers
+     (V_Current_Index : Q_Bingo.T_Number) is
 
-    C_NUMBER : constant POSITIVE :=
-       Q_BINGO.Q_BOMBO.F_GET_NUMBER (V_CURRENT_INDEX);
+    C_Number : constant Positive :=
+       Q_Bingo.Q_Bombo.F_Get_Number (V_Current_Index);
 
   begin
 
-    V_BUTTON_ARRAY (C_NUMBER).SET_NAME ("myButton_blue");
+    V_Button_Array (C_Number).Set_Name ("myButton_blue");
 
-    V_CURRENT_NUMBER.SET_NAME ("myButton_blue");
+    V_Current_Number.Set_Name ("myButton_blue");
 
-    V_CURRENT_NUMBER.SET_LABEL (F_GET_NUMBER (C_NUMBER));
+    V_Current_Number.Set_Label (F_Get_Number (C_Number));
 
-    if V_CURRENT_INDEX > 1 then
+    if V_Current_Index > 1 then
 
       -- GTK.LABEL.SET_MARKUP
       --    (GTK.LABEL.GTK_LABEL (GTK.BUTTON.GET_CHILD (V_PREVIOUS_NUMBER_1)),
@@ -187,262 +187,262 @@ package body Q_BINGADA is
       --        F_GET_NUMBER
       --        (Q_BINGO.Q_BOMBO.F_GET_NUMBER (V_CURRENT_INDEX - 1)) & "</span>");
 
-      V_PREVIOUS_NUMBER_1.SET_LABEL
-         (F_GET_NUMBER
-             (Q_BINGO.Q_BOMBO.F_GET_NUMBER (V_CURRENT_INDEX - 1)));
+      V_Previous_Number_1.Set_Label
+         (F_Get_Number
+             (Q_Bingo.Q_Bombo.F_Get_Number (V_Current_Index - 1)));
 
-      V_PREVIOUS_NUMBER_1.SET_NAME ("myButton_previous_1");
-
-    end if;
-
-    if V_CURRENT_INDEX > 2 then
-
-      V_PREVIOUS_NUMBER_2.SET_LABEL
-         (F_GET_NUMBER
-             (Q_BINGO.Q_BOMBO.F_GET_NUMBER (V_CURRENT_INDEX - 2)));
-
-      V_PREVIOUS_NUMBER_2.SET_NAME ("myButton_previous_2");
+      V_Previous_Number_1.Set_Name ("myButton_previous_1");
 
     end if;
 
-    if V_CURRENT_INDEX > 3 then
+    if V_Current_Index > 2 then
 
-      V_PREVIOUS_NUMBER_3.SET_LABEL
-         (F_GET_NUMBER
-             (Q_BINGO.Q_BOMBO.F_GET_NUMBER (V_CURRENT_INDEX - 3)));
+      V_Previous_Number_2.Set_Label
+         (F_Get_Number
+             (Q_Bingo.Q_Bombo.F_Get_Number (V_Current_Index - 2)));
 
-      V_PREVIOUS_NUMBER_3.SET_NAME ("myButton_previous_3");
+      V_Previous_Number_2.Set_Name ("myButton_previous_2");
+
+    end if;
+
+    if V_Current_Index > 3 then
+
+      V_Previous_Number_3.Set_Label
+         (F_Get_Number
+             (Q_Bingo.Q_Bombo.F_Get_Number (V_Current_Index - 3)));
+
+      V_Previous_Number_3.Set_Name ("myButton_previous_3");
 
 
     end if;
 
-  end P_SET_CURRENT_AND_PREVIOUS_NUMBERS;
+  end P_Set_Current_And_Previous_Numbers;
 
   --==================================================================
 
-  procedure P_GET_NUMBER is
+  procedure P_Get_Number is
 
-    V_LAST_NUMBER : BOOLEAN;
+    V_Last_Number : Boolean;
 
-    V_CURRENT_INDEX : Q_BINGO.T_NUMBER;
+    V_Current_Index : Q_Bingo.T_Number;
 
-    V_NUMBER : POSITIVE;
+    V_Number : Positive;
 
   begin
 
-    Q_BINGO.Q_BOMBO.P_SPIN (V_NUMBER        => V_NUMBER,
-                            V_CURRENT_INDEX => V_CURRENT_INDEX,
-                            V_LAST_NUMBER   => V_LAST_NUMBER);
+    Q_Bingo.Q_Bombo.P_Spin (V_Number        => V_Number,
+                            V_Current_Index => V_Current_Index,
+                            V_Last_Number   => V_Last_Number);
 
-    P_SET_CURRENT_AND_PREVIOUS_NUMBERS (V_CURRENT_INDEX => V_CURRENT_INDEX);
+    P_Set_Current_And_Previous_Numbers (V_Current_Index => V_Current_Index);
 
-  end P_GET_NUMBER;
+  end P_Get_Number;
 
   --==================================================================
 
-  procedure P_BUTTON_CLICKED
-     (SELF : access GTK.BUTTON.GTK_BUTTON_RECORD'CLASS) is
+  procedure P_Button_Clicked
+     (Self : access Gtk.Button.Gtk_Button_Record'Class) is
 
-    pragma UNREFERENCED (SELF);
+    pragma Unreferenced (Self);
 
   begin
 
-    P_GET_NUMBER;
+    P_Get_Number;
 
-  end P_BUTTON_CLICKED;
+  end P_Button_Clicked;
 
   --==================================================================
 
-  procedure P_BUTTON_PRESSED
-     (SELF : access GTK.BUTTON.GTK_BUTTON_RECORD'CLASS) is
+  procedure P_Button_Pressed
+     (Self : access Gtk.Button.Gtk_Button_Record'Class) is
 
-    V_DRUM_SPIN_IMAGE : GTK.IMAGE.GTK_IMAGE;
+    V_Drum_Spin_Image : Gtk.Image.Gtk_Image;
 
   begin
 
-    V_DRUM_SPIN_IMAGE := GTK.IMAGE.GTK_IMAGE_NEW_FROM_FILE (F_SWAP_BOMBO_IMAGE);
+    V_Drum_Spin_Image := Gtk.Image.Gtk_Image_New_From_File (F_Swap_Bombo_Image);
 
-    SELF.SET_IMAGE (V_DRUM_SPIN_IMAGE);
+    Self.Set_Image (V_Drum_Spin_Image);
 
-  end P_BUTTON_PRESSED;
+  end P_Button_Pressed;
 
   --==================================================================
 
-  procedure P_BUTTON_RELEASED
-     (SELF : access GTK.BUTTON.GTK_BUTTON_RECORD'CLASS) is
+  procedure P_Button_Released
+     (Self : access Gtk.Button.Gtk_Button_Record'Class) is
 
-    V_BOMBO_IMAGE : GTK.IMAGE.GTK_IMAGE;
+    V_Bombo_Image : Gtk.Image.Gtk_Image;
 
   begin
 
-    V_BOMBO_IMAGE := GTK.IMAGE.GTK_IMAGE_NEW_FROM_FILE (F_SWAP_BOMBO_IMAGE);
+    V_Bombo_Image := Gtk.Image.Gtk_Image_New_From_File (F_Swap_Bombo_Image);
 
-    SELF.SET_IMAGE (V_BOMBO_IMAGE);
+    Self.Set_Image (V_Bombo_Image);
 
-  end P_BUTTON_RELEASED;
+  end P_Button_Released;
 
   --==================================================================
 
-  procedure P_CREATE_NUMBERS (V_NUMBERS_BOX : out GTK.BOX.GTK_BOX) is
+  procedure P_Create_Numbers (V_Numbers_Box : out Gtk.Box.Gtk_Box) is
 
-    V_HORIZONTAL : GTK.BOX.GTK_BOX;
+    V_Horizontal : Gtk.Box.Gtk_Box;
 
-    V_INDEX : POSITIVE := 1;
+    V_Index : Positive := 1;
 
   begin
 
-    GTK.BOX.GTK_NEW_VBOX
-       (BOX         => V_NUMBERS_BOX,
-        HOMOGENEOUS => TRUE);
+    Gtk.Box.Gtk_New_Vbox
+       (Box         => V_Numbers_Box,
+        Homogeneous => True);
 
     for I in 1 .. 9 loop
 
-      GTK.BOX.GTK_NEW_HBOX (BOX         => V_HORIZONTAL,
-                            HOMOGENEOUS => TRUE);
+      Gtk.Box.Gtk_New_Hbox (Box         => V_Horizontal,
+                            Homogeneous => True);
 
-      GTK.BOX.PACK_START
-         (IN_BOX => V_NUMBERS_BOX,
-          CHILD  => V_HORIZONTAL,
-          EXPAND => TRUE,
-          FILL   => TRUE);
+      Gtk.Box.Pack_Start
+         (In_Box => V_Numbers_Box,
+          Child  => V_Horizontal,
+          Expand => True,
+          Fill   => True);
 
       for J in 1 .. 10 loop
 
-        GTK.BUTTON.GTK_NEW
-           (V_BUTTON_ARRAY (V_INDEX), LABEL => F_GET_NUMBER (V_INDEX));
+        Gtk.Button.Gtk_New
+           (V_Button_Array (V_Index), Label => F_Get_Number (V_Index));
 
-        V_BUTTON_ARRAY (V_INDEX).SET_SENSITIVE (FALSE);
+        V_Button_Array (V_Index).Set_Sensitive (False);
 
-        GTK.BOX.PACK_START
-           (IN_BOX => V_HORIZONTAL,
-            CHILD  => V_BUTTON_ARRAY (V_INDEX),
-            EXPAND => TRUE,
-            FILL   => TRUE);
+        Gtk.Box.Pack_Start
+           (In_Box => V_Horizontal,
+            Child  => V_Button_Array (V_Index),
+            Expand => True,
+            Fill   => True);
 
-        V_INDEX := V_INDEX + 1;
+        V_Index := V_Index + 1;
 
       end loop;
 
     end loop;
 
-  end P_CREATE_NUMBERS;
+  end P_Create_Numbers;
 
   --==================================================================
 
-  type T_WIDGETS_TO_UPDATE is null record;
+  type T_Widgets_To_Update is null record;
 
-  V_NULL_RECORD : T_WIDGETS_TO_UPDATE;
+  V_Null_Record : T_Widgets_To_Update;
 
-  package Q_TIMEOUT is new GLIB.MAIN.GENERIC_SOURCES (T_WIDGETS_TO_UPDATE);
+  package Q_Timeout is new Glib.Main.Generic_Sources (T_Widgets_To_Update);
 
-  V_TIMEOUT : GLIB.MAIN.G_SOURCE_ID;
+  V_Timeout : Glib.Main.G_Source_Id;
 
-  V_SPIN_TIMEOUT : GLIB.MAIN.G_SOURCE_ID;
+  V_Spin_Timeout : Glib.Main.G_Source_Id;
 
   --==================================================================
 
-  function F_SWAP_BOMBO_IMAGE (V_USER : T_WIDGETS_TO_UPDATE) return BOOLEAN is
+  function F_Swap_Bombo_Image (V_User : T_Widgets_To_Update) return Boolean is
 
-    pragma UNREFERENCED (V_USER);
+    pragma Unreferenced (V_User);
 
   begin
 
-    V_BOMBO_BUTTON.SET_IMAGE
-       (GTK.IMAGE.GTK_IMAGE_NEW_FROM_FILE (F_SWAP_BOMBO_IMAGE));
+    V_Bombo_Button.Set_Image
+       (Gtk.Image.Gtk_Image_New_From_File (F_Swap_Bombo_Image));
 
-    return TRUE;
+    return True;
 
-  end F_SWAP_BOMBO_IMAGE;
-
-  --==================================================================
-
-  function F_SPIN_TIMEOUT (V_USER : T_WIDGETS_TO_UPDATE) return BOOLEAN is
-
-    pragma UNREFERENCED (V_USER);
-
-  begin
-
-    P_GET_NUMBER;
-
-    return TRUE;
-
-  end F_SPIN_TIMEOUT;
+  end F_Swap_Bombo_Image;
 
   --==================================================================
 
-  procedure P_START_TIMER is
+  function F_Spin_Timeout (V_User : T_Widgets_To_Update) return Boolean is
+
+    pragma Unreferenced (V_User);
 
   begin
 
-    V_SPIN_TIMEOUT := Q_TIMEOUT.TIMEOUT_ADD
+    P_Get_Number;
+
+    return True;
+
+  end F_Spin_Timeout;
+
+  --==================================================================
+
+  procedure P_Start_Timer is
+
+  begin
+
+    V_Spin_Timeout := Q_Timeout.Timeout_Add
        (--  This timeout will refresh every 5sec
         500,
         --  This is the function to call in the timeout
-        F_SWAP_BOMBO_IMAGE'ACCESS,
+        F_Swap_Bombo_Image'Access,
         --  This is the part of the GUI to refresh
-        V_NULL_RECORD);
+        V_Null_Record);
 
-    V_TIMEOUT := Q_TIMEOUT.TIMEOUT_ADD
+    V_Timeout := Q_Timeout.Timeout_Add
        (--  This timeout will refresh every 5sec
         6000,
         --  This is the function to call in the timeout
-        F_SPIN_TIMEOUT'ACCESS,
+        F_Spin_Timeout'Access,
         --  This is the part of the GUI to refresh
-        V_NULL_RECORD);
+        V_Null_Record);
 
-  end P_START_TIMER;
+  end P_Start_Timer;
 
   --==================================================================
 
-  procedure P_STOP_TIMER is
+  procedure P_Stop_Timer is
 
   begin
 
-    if V_TIMEOUT /= 0 then
+    if V_Timeout /= 0 then
 
-      GLIB.MAIN.REMOVE (V_TIMEOUT);
+      Glib.Main.Remove (V_Timeout);
 
-      GLIB.MAIN.REMOVE (V_SPIN_TIMEOUT);
+      Glib.Main.Remove (V_Spin_Timeout);
 
-      V_TIMEOUT := 0;
+      V_Timeout := 0;
 
-      V_SPIN_TIMEOUT := 0;
+      V_Spin_Timeout := 0;
 
     end if;
 
-  end P_STOP_TIMER;
+  end P_Stop_Timer;
 
   --==================================================================
 
-  procedure P_START_PAUSE_BINGO is
+  procedure P_Start_Pause_Bingo is
 
   begin
 
-    if V_TIMEOUT /= 0 then
+    if V_Timeout /= 0 then
 
-      P_STOP_TIMER;
+      P_Stop_Timer;
 
     else
 
-      P_START_TIMER;
+      P_Start_Timer;
 
     end if;
 
-  end P_START_PAUSE_BINGO;
+  end P_Start_Pause_Bingo;
 
   --==================================================================
 
-  package Q_MAIN_WINDOW_HANDLER is new GTK.HANDLERS.RETURN_CALLBACK
-     (GTK.WIDGET.GTK_WIDGET_RECORD, BOOLEAN);
+  package Q_Main_Window_Handler is new Gtk.Handlers.Return_Callback
+     (Gtk.Widget.Gtk_Widget_Record, Boolean);
 
-  function F_MAIN_WINDOW_BUTTON_PRESS
-     (V_OBJECT : access GTK.WIDGET.GTK_WIDGET_RECORD'CLASS;
-      V_EVENT  : GDK.EVENT.GDK_EVENT) return BOOLEAN is
+  function F_Main_Window_Button_Press
+     (V_Object : access Gtk.Widget.Gtk_Widget_Record'Class;
+      V_Event  : Gdk.Event.Gdk_Event) return Boolean is
 
-    pragma UNREFERENCED (V_OBJECT);
+    pragma Unreferenced (V_Object);
 
-    C_KEY_VAL : constant GDK.TYPES.GDK_KEY_TYPE :=
-       GDK.EVENT.GET_KEY_VAL (V_EVENT);
+    C_Key_Val : constant Gdk.Types.Gdk_Key_Type :=
+       Gdk.Event.Get_Key_Val (V_Event);
 
   begin
 
@@ -451,169 +451,169 @@ package body Q_BINGADA is
     --       (GDK.EVENT.GET_BUTTON (V_EVENT)) & " key val " &
     --       GDK.TYPES.GDK_KEY_TYPE'IMAGE (GDK.EVENT.GET_KEY_VAL (V_EVENT)));
 
-    if C_KEY_VAL in GDK.TYPES.KEYSYMS.GDK_LC_s |
-       GDK.TYPES.KEYSYMS.GDK_S |
-       GDK.TYPES.KEYSYMS.GDK_SPACE then
+    if C_Key_Val in Gdk.Types.Keysyms.Gdk_Lc_S |
+       Gdk.Types.Keysyms.Gdk_S |
+       Gdk.Types.Keysyms.Gdk_Space then
 
-      P_START_PAUSE_BINGO;
+      P_Start_Pause_Bingo;
 
     end if;
 
-    return TRUE;
+    return True;
 
-  end F_MAIN_WINDOW_BUTTON_PRESS;
+  end F_Main_Window_Button_Press;
 
   --==================================================================
 
-  procedure P_CREATE_UPPER_AREA (V_UPPER_AREA : out GTK.BOX.GTK_BOX) is
+  procedure P_Create_Upper_Area (V_Upper_Area : out Gtk.Box.Gtk_Box) is
 
-    V_BOMBO_IMAGE : GTK.IMAGE.GTK_IMAGE;
+    V_Bombo_Image : Gtk.Image.Gtk_Image;
 
-    V_NUMBERS_BOX : GTK.BOX.GTK_BOX;
+    V_Numbers_Box : Gtk.Box.Gtk_Box;
 
-    V_NUMBERS_BOX_UPPER : GTK.BOX.GTK_BOX;
+    V_Numbers_Box_Upper : Gtk.Box.Gtk_Box;
 
-    V_NUMBERS_BOX_LOWER : GTK.BOX.GTK_BOX;
+    V_Numbers_Box_Lower : Gtk.Box.Gtk_Box;
 
   begin
 
-    GTK.BOX.GTK_NEW_HBOX
-       (BOX         => V_UPPER_AREA,
-        HOMOGENEOUS => TRUE);
+    Gtk.Box.Gtk_New_Hbox
+       (Box         => V_Upper_Area,
+        Homogeneous => True);
 
-    GTK.BUTTON.GTK_NEW (V_BOMBO_BUTTON);
+    Gtk.Button.Gtk_New (V_Bombo_Button);
 
-    GTK.BUTTON.GTK_NEW (V_CURRENT_NUMBER, LABEL => C_NULL_NUMBER_IMAGE);
+    Gtk.Button.Gtk_New (V_Current_Number, Label => C_Null_Number_Image);
 
-    V_CURRENT_NUMBER.SET_SENSITIVE (FALSE);
+    V_Current_Number.Set_Sensitive (False);
 
-    GTK.BUTTON.GTK_NEW (V_PREVIOUS_NUMBER_1, LABEL => C_NULL_NUMBER_IMAGE);
+    Gtk.Button.Gtk_New (V_Previous_Number_1, Label => C_Null_Number_Image);
 
-    V_PREVIOUS_NUMBER_1.SET_SENSITIVE (FALSE);
+    V_Previous_Number_1.Set_Sensitive (False);
 
-    GTK.BUTTON.GTK_NEW (V_PREVIOUS_NUMBER_2, LABEL => C_NULL_NUMBER_IMAGE);
+    Gtk.Button.Gtk_New (V_Previous_Number_2, Label => C_Null_Number_Image);
 
-    V_PREVIOUS_NUMBER_2.SET_SENSITIVE (FALSE);
+    V_Previous_Number_2.Set_Sensitive (False);
 
-    GTK.BUTTON.GTK_NEW (V_PREVIOUS_NUMBER_3, LABEL => C_NULL_NUMBER_IMAGE);
+    Gtk.Button.Gtk_New (V_Previous_Number_3, Label => C_Null_Number_Image);
 
-    V_PREVIOUS_NUMBER_3.SET_SENSITIVE (FALSE);
+    V_Previous_Number_3.Set_Sensitive (False);
 
-    Q_MAIN_WINDOW_HANDLER.CONNECT
-       (V_BOMBO_BUTTON,
+    Q_Main_Window_Handler.Connect
+       (V_Bombo_Button,
         "key_press_event",
-        Q_MAIN_WINDOW_HANDLER.TO_MARSHALLER
-           (F_MAIN_WINDOW_BUTTON_PRESS'ACCESS));
+        Q_Main_Window_Handler.To_Marshaller
+           (F_Main_Window_Button_Press'Access));
 
-    V_BOMBO_BUTTON.ON_PRESSED (P_BUTTON_PRESSED'ACCESS);
+    V_Bombo_Button.On_Pressed (P_Button_Pressed'Access);
 
-    V_BOMBO_BUTTON.ON_RELEASED (P_BUTTON_RELEASED'ACCESS);
+    V_Bombo_Button.On_Released (P_Button_Released'Access);
 
-    V_BOMBO_BUTTON.ON_CLICKED (P_BUTTON_CLICKED'ACCESS);
+    V_Bombo_Button.On_Clicked (P_Button_Clicked'Access);
 
-    V_BOMBO_IMAGE := GTK.IMAGE.GTK_IMAGE_NEW_FROM_FILE (C_BOMBO_FILE);
+    V_Bombo_Image := Gtk.Image.Gtk_Image_New_From_File (C_Bombo_File);
 
-    V_BOMBO_BUTTON.SET_IMAGE (IMAGE => V_BOMBO_IMAGE);
+    V_Bombo_Button.Set_Image (Image => V_Bombo_Image);
 
-    V_BOMBO_BUTTON.Set_Name ("drum_button");
+    V_Bombo_Button.Set_Name ("drum_button");
 
-    GTK.BOX.PACK_START
-       (IN_BOX => V_UPPER_AREA,
-        CHILD  => V_BOMBO_BUTTON);
+    Gtk.Box.Pack_Start
+       (In_Box => V_Upper_Area,
+        Child  => V_Bombo_Button);
 
-    GTK.BOX.GTK_NEW_VBOX
-       (BOX         => V_NUMBERS_BOX,
-        HOMOGENEOUS => TRUE);
+    Gtk.Box.Gtk_New_Vbox
+       (Box         => V_Numbers_Box,
+        Homogeneous => True);
 
-    GTK.BOX.PACK_START
-       (IN_BOX => V_UPPER_AREA,
-        CHILD  => V_NUMBERS_BOX);
+    Gtk.Box.Pack_Start
+       (In_Box => V_Upper_Area,
+        Child  => V_Numbers_Box);
 
-    GTK.BOX.GTK_NEW_HBOX
-       (BOX         => V_NUMBERS_BOX_UPPER,
-        HOMOGENEOUS => TRUE);
+    Gtk.Box.Gtk_New_Hbox
+       (Box         => V_Numbers_Box_Upper,
+        Homogeneous => True);
 
-    GTK.BOX.GTK_NEW_HBOX
-       (BOX         => V_NUMBERS_BOX_LOWER,
-        HOMOGENEOUS => TRUE);
+    Gtk.Box.Gtk_New_Hbox
+       (Box         => V_Numbers_Box_Lower,
+        Homogeneous => True);
 
-    GTK.BOX.PACK_START
-       (IN_BOX => V_NUMBERS_BOX,
-        CHILD  => V_NUMBERS_BOX_UPPER);
+    Gtk.Box.Pack_Start
+       (In_Box => V_Numbers_Box,
+        Child  => V_Numbers_Box_Upper);
 
-    GTK.BOX.PACK_START
-       (IN_BOX => V_NUMBERS_BOX,
-        CHILD  => V_NUMBERS_BOX_LOWER);
+    Gtk.Box.Pack_Start
+       (In_Box => V_Numbers_Box,
+        Child  => V_Numbers_Box_Lower);
 
-    GTK.BOX.PACK_START
-       (IN_BOX => V_NUMBERS_BOX_UPPER,
-        CHILD  => V_CURRENT_NUMBER);
+    Gtk.Box.Pack_Start
+       (In_Box => V_Numbers_Box_Upper,
+        Child  => V_Current_Number);
 
-    GTK.BOX.PACK_START
-       (IN_BOX => V_NUMBERS_BOX_LOWER,
-        CHILD  => V_PREVIOUS_NUMBER_1);
+    Gtk.Box.Pack_Start
+       (In_Box => V_Numbers_Box_Lower,
+        Child  => V_Previous_Number_1);
 
-    GTK.BOX.PACK_START
-       (IN_BOX => V_NUMBERS_BOX_LOWER,
-        CHILD  => V_PREVIOUS_NUMBER_2);
+    Gtk.Box.Pack_Start
+       (In_Box => V_Numbers_Box_Lower,
+        Child  => V_Previous_Number_2);
 
-    GTK.BOX.PACK_START
-       (IN_BOX => V_NUMBERS_BOX_LOWER,
-        CHILD  => V_PREVIOUS_NUMBER_3);
+    Gtk.Box.Pack_Start
+       (In_Box => V_Numbers_Box_Lower,
+        Child  => V_Previous_Number_3);
 
-  end P_CREATE_UPPER_AREA;
+  end P_Create_Upper_Area;
 
   --==================================================================
 
-  procedure P_CREATE_MAIN_WINDOW
-     (V_MENU_BAR    : GTK.MENU_BAR.GTK_MENU_BAR;
-      V_UPPER_AREA  : GTK.BOX.GTK_BOX;
-      V_NUMBERS_BOX : GTK.BOX.GTK_BOX;
-      V_MAIN_WINDOW : out GTK.WINDOW.GTK_WINDOW) is
+  procedure P_Create_Main_Window
+     (V_Menu_Bar    : Gtk.Menu_Bar.Gtk_Menu_Bar;
+      V_Upper_Area  : Gtk.Box.Gtk_Box;
+      V_Numbers_Box : Gtk.Box.Gtk_Box;
+      V_Main_Window : out Gtk.Window.Gtk_Window) is
 
-    V_VERTICAL_BOX : GTK.BOX.GTK_BOX;
+    V_Vertical_Box : Gtk.Box.Gtk_Box;
 
-    V_BOMBO_ICON : GDK.PIXBUF.GDK_PIXBUF;
+    V_Bombo_Icon : Gdk.Pixbuf.Gdk_Pixbuf;
 
-    V_ICON_ERROR : GLIB.ERROR.GERROR;
+    V_Icon_Error : Glib.Error.Gerror;
 
   begin
 
     -- Create main window box
     --
-    GTK.WINDOW.GTK_NEW (V_MAIN_WINDOW, GTK.ENUMS.WINDOW_TOPLEVEL);
+    Gtk.Window.Gtk_New (V_Main_Window, Gtk.Enums.Window_Toplevel);
 
-    GTK.WINDOW.SET_MODAL (WINDOW => V_MAIN_WINDOW,
-                          MODAL  => FALSE);
+    Gtk.Window.Set_Modal (Window => V_Main_Window,
+                          Modal  => False);
 
-    GTK.WINDOW.SET_TITLE (V_MAIN_WINDOW, "BingAda");
+    Gtk.Window.Set_Title (V_Main_Window, "BingAda");
 
-    GDK.PIXBUF.GDK_NEW_FROM_FILE
-      (PIXBUF   => V_BOMBO_ICON,
-       FILENAME => C_BOMBO_FILE,
-       ERROR    => V_ICON_ERROR);
+    Gdk.Pixbuf.Gdk_New_From_File
+      (Pixbuf   => V_Bombo_Icon,
+       Filename => C_Bombo_File,
+       Error    => V_Icon_Error);
 
-    GTK.WINDOW.Set_Default_Icon
-      (ICON   => V_BOMBO_ICON);
+    Gtk.Window.Set_Default_Icon
+      (Icon   => V_Bombo_Icon);
 
     -- |--- Vertical BOX |
     -- |                 |
     -- |                 |
     -- |                 |
     --
-    GTK.BOX.GTK_NEW_VBOX
-       (BOX         => V_VERTICAL_BOX,
-        HOMOGENEOUS => FALSE);
+    Gtk.Box.Gtk_New_Vbox
+       (Box         => V_Vertical_Box,
+        Homogeneous => False);
 
-    GTK.WINDOW.ADD
-       (V_MAIN_WINDOW,
-        V_VERTICAL_BOX);
+    Gtk.Window.Add
+       (V_Main_Window,
+        V_Vertical_Box);
 
-    GTK.BOX.PACK_START
-       (IN_BOX => V_VERTICAL_BOX,
-        CHILD  => V_MENU_BAR,
-        EXPAND => FALSE,
-        FILL   => TRUE);
+    Gtk.Box.Pack_Start
+       (In_Box => V_Vertical_Box,
+        Child  => V_Menu_Bar,
+        Expand => False,
+        Fill   => True);
 
     --
     -- | ---- Vertical Box --- |
@@ -625,340 +625,340 @@ package body Q_BINGADA is
     -- | -                   - |
     -- | ----------------------|
     --
-    GTK.BOX.PACK_START
-       (IN_BOX => V_VERTICAL_BOX,
-        CHILD  => V_UPPER_AREA);
+    Gtk.Box.Pack_Start
+       (In_Box => V_Vertical_Box,
+        Child  => V_Upper_Area);
 
-    GTK.BOX.PACK_START
-       (IN_BOX => V_VERTICAL_BOX,
-        CHILD  => V_NUMBERS_BOX);
+    Gtk.Box.Pack_Start
+       (In_Box => V_Vertical_Box,
+        Child  => V_Numbers_Box);
 
-  end P_CREATE_MAIN_WINDOW;
+  end P_Create_Main_Window;
 
   --==================================================================
 
-  procedure P_START_BINGO
-     (V_OBJECT : access GTK.MENU_ITEM.GTK_MENU_ITEM_RECORD'CLASS) is
+  procedure P_Start_Bingo
+     (V_Object : access Gtk.Menu_Item.Gtk_Menu_Item_Record'Class) is
 
-    pragma UNREFERENCED (V_OBJECT);
+    pragma Unreferenced (V_Object);
 
   begin
 
     --  If there is no timeout registered to monitor the tasks,
     --  start one now!
     --
-    if V_TIMEOUT = 0 then
+    if V_Timeout = 0 then
 
-      P_START_TIMER;
+      P_Start_Timer;
 
     end if;
 
-  end P_START_BINGO;
+  end P_Start_Bingo;
 
   --==================================================================
 
-  procedure P_PAUSE_BINGO
-     (V_OBJECT : access GTK.MENU_ITEM.GTK_MENU_ITEM_RECORD'CLASS) is
+  procedure P_Pause_Bingo
+     (V_Object : access Gtk.Menu_Item.Gtk_Menu_Item_Record'Class) is
 
-    pragma UNREFERENCED (V_Object);
+    pragma Unreferenced (V_Object);
 
   begin
 
-    P_STOP_TIMER;
+    P_Stop_Timer;
 
-  end P_PAUSE_BINGO;
+  end P_Pause_Bingo;
 
   --==================================================================
 
-  V_CARDS : Q_CSV.Q_READ_FILE.Q_BINGO_CARDS.VECTOR;
+  V_Cards : Q_Csv.Q_Read_File.Q_Bingo_Cards.Vector;
 
-  function F_IS_NUMBER_MARKED_OFF
-     (V_NUMBER : Q_BINGO.T_NUMBER) return BOOLEAN is
+  function F_Is_Number_Marked_Off
+     (V_Number : Q_Bingo.T_Number) return Boolean is
 
-    V_FOUND : BOOLEAN := FALSE;
+    V_Found : Boolean := False;
 
   begin
 
-    for I in 1 .. Q_BINGO.Q_BOMBO.F_GET_CURRENT_INDEX loop
+    for I in 1 .. Q_Bingo.Q_Bombo.F_Get_Current_Index loop
 
-      V_FOUND := Q_BINGO.Q_BOMBO.F_GET_NUMBER (I) = V_NUMBER;
+      V_Found := Q_Bingo.Q_Bombo.F_Get_Number (I) = V_Number;
 
-      exit when V_FOUND;
+      exit when V_Found;
 
     end loop;
 
-    return V_FOUND;
+    return V_Found;
 
-  end F_IS_NUMBER_MARKED_OFF;
+  end F_Is_Number_Marked_Off;
 
   --==================================================================
 
-  function F_ALL_NUMBERS_MARKED_OFF
-     (V_CARD : Q_CSV.Q_READ_FILE.T_CARD) return BOOLEAN is
+  function F_All_Numbers_Marked_Off
+     (V_Card : Q_Csv.Q_Read_File.T_Card) return Boolean is
 
-    V_ALL_MARKED_OFF : BOOLEAN := TRUE;
+    V_All_Marked_Off : Boolean := True;
 
   begin
 
-    for V_Number of V_CARD.R_NUMBERS loop
+    for V_Number of V_Card.R_Numbers loop
 
-      V_ALL_MARKED_OFF := F_IS_NUMBER_MARKED_OFF (V_Number);
+      V_All_Marked_Off := F_Is_Number_Marked_Off (V_Number);
 
-      exit when not V_ALL_MARKED_OFF;
+      exit when not V_All_Marked_Off;
 
     end loop;
 
-    return V_ALL_MARKED_OFF;
+    return V_All_Marked_Off;
 
-  end F_ALL_NUMBERS_MARKED_OFF;
+  end F_All_Numbers_Marked_Off;
 
   --==================================================================
 
-  procedure P_CHECK_BINGO (V_CARDS : Q_CSV.Q_READ_FILE.Q_BINGO_CARDS.VECTOR) is
+  procedure P_Check_Bingo (V_Cards : Q_Csv.Q_Read_File.Q_Bingo_Cards.Vector) is
 
   begin
 
-    TEXT_IO.PUT_LINE ("-------------------------------------------");
+    Text_Io.Put_Line ("-------------------------------------------");
 
-    for V_CARD of V_CARDS loop
+    for V_Card of V_Cards loop
 
-      TEXT_IO.PUT_LINE
-         (V_CARD.R_NAME & " : " &
-             BOOLEAN'IMAGE (F_ALL_NUMBERS_MARKED_OFF (V_CARD)));
+      Text_Io.Put_Line
+         (V_Card.R_Name & " : " &
+             Boolean'Image (F_All_Numbers_Marked_Off (V_Card)));
 
     end loop;
 
-  end P_CHECK_BINGO;
+  end P_Check_Bingo;
 
   --==================================================================
 
-  procedure P_SHOW_CARDS (V_CARDS : Q_CSV.Q_READ_FILE.Q_BINGO_CARDS.VECTOR) is
+  procedure P_Show_Cards (V_Cards : Q_Csv.Q_Read_File.Q_Bingo_Cards.Vector) is
 
   begin
 
-    TEXT_IO.PUT_LINE ("Number of Elements : " &
-                         ADA.CONTAINERS.COUNT_TYPE'IMAGE (V_CARDS.LENGTH));
+    Text_Io.Put_Line ("Number of Elements : " &
+                         Ada.Containers.Count_Type'Image (V_Cards.Length));
 
-    for E of V_CARDS loop
+    for E of V_Cards loop
 
-      TEXT_IO.PUT_LINE ("- " & E.R_NAME);
+      Text_Io.Put_Line ("- " & E.R_Name);
 
     end loop;
 
-  end P_SHOW_CARDS;
+  end P_Show_Cards;
 
   --==================================================================
 
-  procedure P_READ_CARDS_FROM_FILE is
+  procedure P_Read_Cards_From_File is
 
   begin
 
-    V_CARDS.SET_LENGTH (0);
+    V_Cards.Set_Length (0);
 
-    Q_CSV.Q_READ_FILE.P_READ_BINGO_CARDS
-       (V_FILE_NAME => "bingo_cards.csv",
-        V_CARDS     => V_CARDS);
+    Q_Csv.Q_Read_File.P_Read_Bingo_Cards
+       (V_File_Name => "bingo_cards.csv",
+        V_Cards     => V_Cards);
 
-    P_CHECK_BINGO (V_CARDS);
+    P_Check_Bingo (V_Cards);
 
     --P_SHOW_CARDS (V_CARDS);
 
-  end P_READ_CARDS_FROM_FILE;
+  end P_Read_Cards_From_File;
 
   --==================================================================
 
-  procedure P_CHECK_CARDS
-     (V_Object : access GTK.MENU_ITEM.GTK_MENU_ITEM_RECORD'Class) is
+  procedure P_Check_Cards
+     (V_Object : access Gtk.Menu_Item.Gtk_Menu_Item_Record'Class) is
 
-    pragma UNREFERENCED (V_Object);
+    pragma Unreferenced (V_Object);
 
   begin
 
-    P_READ_CARDS_FROM_FILE;
+    P_Read_Cards_From_File;
 
-  end P_CHECK_CARDS;
+  end P_Check_Cards;
 
   --==================================================================
 
-  procedure P_INIT_BINGO is
+  procedure P_Init_Bingo is
 
   begin
 
-    Q_BINGO.Q_BOMBO.P_INIT;
+    Q_Bingo.Q_Bombo.P_Init;
 
     for V_Button of V_Button_Array loop
 
-      V_BUTTON.SET_NAME ("myButton_white");
+      V_Button.Set_Name ("myButton_white");
 
     end loop;
 
-    V_CURRENT_NUMBER.SET_NAME ("current");
+    V_Current_Number.Set_Name ("current");
 
-    V_CURRENT_NUMBER.SET_LABEL (C_NULL_NUMBER_IMAGE);
+    V_Current_Number.Set_Label (C_Null_Number_Image);
 
-    V_PREVIOUS_NUMBER_1.SET_LABEL (C_NULL_NUMBER_IMAGE);
+    V_Previous_Number_1.Set_Label (C_Null_Number_Image);
 
-    V_PREVIOUS_NUMBER_2.SET_LABEL (C_NULL_NUMBER_IMAGE);
+    V_Previous_Number_2.Set_Label (C_Null_Number_Image);
 
-    V_PREVIOUS_NUMBER_3.SET_LABEL (C_NULL_NUMBER_IMAGE);
+    V_Previous_Number_3.Set_Label (C_Null_Number_Image);
 
-    P_STOP_TIMER;
+    P_Stop_Timer;
 
-  end P_INIT_BINGO;
+  end P_Init_Bingo;
 
   --==================================================================
 
-  package P_MENU_ITEM_HANDLER is new GTK.HANDLERS.CALLBACK
-     (GTK.MENU_ITEM.GTK_MENU_ITEM_RECORD);
+  package P_Menu_Item_Handler is new Gtk.Handlers.Callback
+     (Gtk.Menu_Item.Gtk_Menu_Item_Record);
 
-  procedure P_NEW_GAME
-     (V_EMITTER : access GTK.MENU_ITEM.GTK_MENU_ITEM_RECORD'CLASS) is
+  procedure P_New_Game
+     (V_Emitter : access Gtk.Menu_Item.Gtk_Menu_Item_Record'Class) is
 
-    pragma UNREFERENCED (V_EMITTER);
+    pragma Unreferenced (V_Emitter);
 
   begin
 
-    P_INIT_BINGO;
+    P_Init_Bingo;
 
-  end P_NEW_GAME;
+  end P_New_Game;
 
   --==================================================================
 
-  procedure P_EXIT_BINGO
-     (SELF : access GTK.MENU_ITEM.GTK_MENU_ITEM_RECORD'CLASS) is
+  procedure P_Exit_Bingo
+     (Self : access Gtk.Menu_Item.Gtk_Menu_Item_Record'Class) is
 
   begin
 
-    P_MAIN_QUIT (SELF);
+    P_Main_Quit (Self);
 
-  end P_EXIT_BINGO;
+  end P_Exit_Bingo;
 
   --==================================================================
 
-  procedure P_HELP_BINGO
-     (V_WIDGET : access GTK.MENU_ITEM.GTK_MENU_ITEM_RECORD'CLASS) is
+  procedure P_Help_Bingo
+     (V_Widget : access Gtk.Menu_Item.Gtk_Menu_Item_Record'Class) is
 
   begin
 
-    Q_BINGO_HELP.P_SHOW_WINDOW
-       (V_PARENT_WINDOW =>
-           GTK.WINDOW.GTK_WINDOW (GTK.MENU_ITEM.GET_TOPLEVEL (V_WIDGET)));
+    Q_Bingo_Help.P_Show_Window
+       (V_Parent_Window =>
+           Gtk.Window.Gtk_Window (Gtk.Menu_Item.Get_Toplevel (V_Widget)));
 
-  end P_HELP_BINGO;
+  end P_Help_Bingo;
 
   --==================================================================
 
-  procedure P_CREATE_GAME_MENU
-     (V_GAME_MENU_ITEM : out GTK.MENU_ITEM.GTK_MENU_ITEM) is
+  procedure P_Create_Game_Menu
+     (V_Game_Menu_Item : out Gtk.Menu_Item.Gtk_Menu_Item) is
 
-    V_NEW_GAME, V_AUTO_START, V_PAUSE, V_CHECK_CARDS, V_EXIT,
-       V_HELP : GTK.MENU_ITEM.GTK_MENU_ITEM;
+    V_New_Game, V_Auto_Start, V_Pause, V_Check_Cards, V_Exit,
+       V_Help : Gtk.Menu_Item.Gtk_Menu_Item;
 
-    V_GAME_MENU : GTK.MENU.GTK_MENU;
+    V_Game_Menu : Gtk.Menu.Gtk_Menu;
 
   begin
 
     --  Creates GAME menu submenus
     --
-    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC
-       (V_NEW_GAME, -"menu_new_game");
+    Gtk.Menu_Item.Gtk_New_With_Mnemonic
+       (V_New_Game, -"menu_new_game");
 
-    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC
-       (V_AUTO_START, -"menu_auto_spin");
+    Gtk.Menu_Item.Gtk_New_With_Mnemonic
+       (V_Auto_Start, -"menu_auto_spin");
 
-    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC
-       (V_PAUSE, -"menu_pause");
+    Gtk.Menu_Item.Gtk_New_With_Mnemonic
+       (V_Pause, -"menu_pause");
 
-    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC
-       (V_CHECK_CARDS, -"menu_check_cards");
+    Gtk.Menu_Item.Gtk_New_With_Mnemonic
+       (V_Check_Cards, -"menu_check_cards");
 
-    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC
-       (V_EXIT, -"menu_exit");
+    Gtk.Menu_Item.Gtk_New_With_Mnemonic
+       (V_Exit, -"menu_exit");
 
-    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC
-       (V_HELP, -"menu_help");
+    Gtk.Menu_Item.Gtk_New_With_Mnemonic
+       (V_Help, -"menu_help");
 
-    GTK.MENU_ITEM.GTK_NEW_WITH_MNEMONIC
-       (V_GAME_MENU_ITEM, -"main_menu");
+    Gtk.Menu_Item.Gtk_New_With_Mnemonic
+       (V_Game_Menu_Item, -"main_menu");
 
     -- Creates the menu called game
     --
-    GTK.MENU.GTK_NEW (V_GAME_MENU);
+    Gtk.Menu.Gtk_New (V_Game_Menu);
 
     -- Append all menu items to the game menu.
     --
-    GTK.MENU.APPEND (MENU_SHELL => V_GAME_MENU,
-                     CHILD      => V_NEW_GAME);
+    Gtk.Menu.Append (Menu_Shell => V_Game_Menu,
+                     Child      => V_New_Game);
 
-    GTK.MENU.APPEND (MENU_SHELL => V_GAME_MENU,
-                     CHILD      => V_AUTO_START);
+    Gtk.Menu.Append (Menu_Shell => V_Game_Menu,
+                     Child      => V_Auto_Start);
 
-    GTK.MENU.APPEND (MENU_SHELL => V_GAME_MENU,
-                     CHILD      => V_PAUSE);
+    Gtk.Menu.Append (Menu_Shell => V_Game_Menu,
+                     Child      => V_Pause);
 
-    GTK.MENU.APPEND (MENU_SHELL => V_GAME_MENU,
-                     CHILD      => V_CHECK_CARDS);
+    Gtk.Menu.Append (Menu_Shell => V_Game_Menu,
+                     Child      => V_Check_Cards);
 
-    GTK.MENU.APPEND (MENU_SHELL => V_GAME_MENU,
-                     CHILD      => V_HELP);
+    Gtk.Menu.Append (Menu_Shell => V_Game_Menu,
+                     Child      => V_Help);
 
-    GTK.MENU.APPEND (MENU_SHELL => V_GAME_MENU,
-                     CHILD      => V_EXIT);
+    Gtk.Menu.Append (Menu_Shell => V_Game_Menu,
+                     Child      => V_Exit);
 
     -- Sets the submenu
     --
-    GTK.MENU_ITEM.SET_SUBMENU (V_GAME_MENU_ITEM, V_GAME_MENU);
+    Gtk.Menu_Item.Set_Submenu (V_Game_Menu_Item, V_Game_Menu);
 
-    P_MENU_ITEM_HANDLER.CONNECT
-       (V_NEW_GAME,
+    P_Menu_Item_Handler.Connect
+       (V_New_Game,
         "activate",
-        P_NEW_GAME'ACCESS);
+        P_New_Game'Access);
 
-    P_MENU_ITEM_HANDLER.CONNECT
-       (V_AUTO_START,
+    P_Menu_Item_Handler.Connect
+       (V_Auto_Start,
         "activate",
-        P_START_BINGO'ACCESS);
+        P_Start_Bingo'Access);
 
-    P_MENU_ITEM_HANDLER.CONNECT
-       (V_PAUSE,
+    P_Menu_Item_Handler.Connect
+       (V_Pause,
         "activate",
-        P_PAUSE_BINGO'ACCESS);
+        P_Pause_Bingo'Access);
 
-     P_MENU_ITEM_HANDLER.CONNECT
-       (V_CHECK_CARDS,
+     P_Menu_Item_Handler.Connect
+       (V_Check_Cards,
         "activate",
-        P_CHECK_CARDS'ACCESS);
+        P_Check_Cards'Access);
 
-     P_MENU_ITEM_HANDLER.CONNECT
-       (V_EXIT,
+     P_Menu_Item_Handler.Connect
+       (V_Exit,
         "activate",
-        P_EXIT_BINGO'ACCESS);
+        P_Exit_Bingo'Access);
 
-     P_MENU_ITEM_HANDLER.CONNECT
-       (V_HELP,
+     P_Menu_Item_Handler.Connect
+       (V_Help,
         "activate",
-        P_HELP_BINGO'ACCESS);
+        P_Help_Bingo'Access);
 
-  end P_CREATE_GAME_MENU;
+  end P_Create_Game_Menu;
 
   --==================================================================
 
-  procedure P_CREATE_MENU_BAR
-     (V_MENU_BAR : out GTK.MENU_BAR.GTK_MENU_BAR) is
+  procedure P_Create_Menu_Bar
+     (V_Menu_Bar : out Gtk.Menu_Bar.Gtk_Menu_Bar) is
 
-    V_GAME_MENU_ITEM : GTK.MENU_ITEM.GTK_MENU_ITEM;
+    V_Game_Menu_Item : Gtk.Menu_Item.Gtk_Menu_Item;
 
   begin
 
-    P_CREATE_GAME_MENU (V_GAME_MENU_ITEM => V_GAME_MENU_ITEM);
+    P_Create_Game_Menu (V_Game_Menu_Item => V_Game_Menu_Item);
 
     -- It creates the menu bar which contains all the menus.
     --
-    GTK.MENU_BAR.GTK_NEW (V_MENU_BAR);
+    Gtk.Menu_Bar.Gtk_New (V_Menu_Bar);
 
-    GTK.MENU_BAR.ADD (V_MENU_BAR, V_GAME_MENU_ITEM);
+    Gtk.Menu_Bar.Add (V_Menu_Bar, V_Game_Menu_Item);
 
-  end P_CREATE_MENU_BAR;
+  end P_Create_Menu_Bar;
 
   --==================================================================
 
@@ -966,51 +966,51 @@ package body Q_BINGADA is
   -- This is the main gtkada procedure.
   -- It initialises the bingo's bombo and the GTKAda HMI.
   --]
-  procedure P_CREATE_WIDGETS is
+  procedure P_Create_Widgets is
 
-    V_UPPER_AREA : GTK.BOX.GTK_BOX;
+    V_Upper_Area : Gtk.Box.Gtk_Box;
 
-    V_NUMBERS_BOX : GTK.BOX.GTK_BOX;
+    V_Numbers_Box : Gtk.Box.Gtk_Box;
 
-    V_MAIN_WINDOW : GTK.WINDOW.GTK_WINDOW;
+    V_Main_Window : Gtk.Window.Gtk_Window;
 
-    V_MENU_BAR : GTK.MENU_BAR.GTK_MENU_BAR;
+    V_Menu_Bar : Gtk.Menu_Bar.Gtk_Menu_Bar;
 
   begin
 
-    Q_BINGO.Q_GTK.Q_INTL.P_INITIALISE;
+    Q_Bingo.Q_Gtk.Q_Intl.P_Initialise;
 
-    P_LOAD_CSS;
+    P_Load_Css;
 
-    P_CREATE_UPPER_AREA (V_UPPER_AREA => V_UPPER_AREA);
+    P_Create_Upper_Area (V_Upper_Area => V_Upper_Area);
 
-    P_CREATE_NUMBERS (V_NUMBERS_BOX => V_NUMBERS_BOX);
+    P_Create_Numbers (V_Numbers_Box => V_Numbers_Box);
 
-    P_CREATE_MENU_BAR (V_MENU_BAR => V_MENU_BAR);
+    P_Create_Menu_Bar (V_Menu_Bar => V_Menu_Bar);
 
-    P_CREATE_MAIN_WINDOW (V_MENU_BAR    => V_MENU_BAR,
-                          V_UPPER_AREA  => V_UPPER_AREA,
-                          V_NUMBERS_BOX => V_NUMBERS_BOX,
-                          V_MAIN_WINDOW => V_MAIN_WINDOW);
+    P_Create_Main_Window (V_Menu_Bar    => V_Menu_Bar,
+                          V_Upper_Area  => V_Upper_Area,
+                          V_Numbers_Box => V_Numbers_Box,
+                          V_Main_Window => V_Main_Window);
 
-    Q_MAIN_WINDOW_HANDLER.CONNECT
-       (V_MAIN_WINDOW,
+    Q_Main_Window_Handler.Connect
+       (V_Main_Window,
         "key_press_event",
-        Q_MAIN_WINDOW_HANDLER.TO_MARSHALLER
-           (F_MAIN_WINDOW_BUTTON_PRESS'ACCESS));
+        Q_Main_Window_Handler.To_Marshaller
+           (F_Main_Window_Button_Press'Access));
 
     -- Initialise bombo numbers.
     --
-    P_INIT_BINGO;
+    P_Init_Bingo;
 
-    V_MAIN_WINDOW.ON_DESTROY (P_MAIN_QUIT'ACCESS);
+    V_Main_Window.On_Destroy (P_Main_Quit'Access);
 
-    V_MAIN_WINDOW.MAXIMIZE;
+    V_Main_Window.Maximize;
 
-    V_MAIN_WINDOW.SHOW_ALL;
+    V_Main_Window.Show_All;
 
-  end P_CREATE_WIDGETS;
+  end P_Create_Widgets;
 
   --==================================================================
 
-end Q_BINGADA;
+end Q_Bingada;

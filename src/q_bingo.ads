@@ -8,10 +8,10 @@
 --*
 --*****************************************************************************
 
-package Q_BINGO with Pure is
+package Q_Bingo with Pure is
 
-  C_LAST_NUMBER : constant := 90;
+  C_Last_Number : constant := 90;
 
-  subtype T_NUMBER is POSITIVE range 1 .. C_LAST_NUMBER;
+  subtype T_Number is Positive range 1 .. C_Last_Number;
 
-end Q_BINGO;
+end Q_Bingo;
