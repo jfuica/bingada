@@ -8,8 +8,8 @@
 --*
 --*****************************************************************************
 
-package Q_BINGO.Q_GTK.Q_INTL is
+package Q_Bingo.Q_Gtk.Q_Intl is
 
-  procedure P_INITIALISE;
+  procedure P_Initialise;
 
-end Q_BINGO.Q_GTK.Q_INTL;
+end Q_Bingo.Q_Gtk.Q_Intl;

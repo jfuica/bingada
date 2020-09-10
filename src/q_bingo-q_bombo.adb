@@ -8,82 +8,82 @@
 --*
 --*****************************************************************************
 
-with Q_GEN_SHUFFLE;
+with Q_Gen_Shuffle;
 
 with Q_Sound;
 
-package body Q_BINGO.Q_BOMBO is
+package body Q_Bingo.Q_Bombo is
 
   --==================================================================
 
-  V_INDEX : T_NUMBER;
+  V_Index : T_Number;
 
   --==================================================================
 
-  package Q_SHUFFLE is new Q_GEN_SHUFFLE
-     (ELEMENT_TYPE => T_NUMBER,
-      C_MAX_NUMBER => T_NUMBER'LAST);
+  package Q_Shuffle is new Q_Gen_Shuffle
+     (Element_Type => T_Number,
+      C_Max_Number => T_Number'Last);
 
-  V_BINGO_ARRAY : Q_SHUFFLE.ARRAY_TYPE;
+  V_Bingo_Array : Q_Shuffle.Array_Type;
 
   --==================================================================
 
-  procedure P_INIT is
+  procedure P_Init is
 
   begin
 
-    for I in 1 .. T_NUMBER'LAST loop
+    for I in 1 .. T_Number'Last loop
 
-      V_BINGO_ARRAY (I) := I;
+      V_Bingo_Array (I) := I;
 
     end loop;
 
-    Q_SHUFFLE.P_SHUFFLE (LIST => V_BINGO_ARRAY);
+    Q_Shuffle.P_Shuffle (List => V_Bingo_Array);
 
-    V_INDEX := 1;
+    V_Index := 1;
 
-  end P_INIT;
+  end P_Init;
 
   --==================================================================
 
-  procedure P_SPIN (V_NUMBER        : out POSITIVE;
-                    V_CURRENT_INDEX : out T_NUMBER;
-                    V_LAST_NUMBER   : out BOOLEAN) is
+  procedure P_Spin (V_Number        : out Positive;
+                    V_Current_Index : out T_Number;
+                    V_Last_Number   : out Boolean) is
   begin
 
-    if V_INDEX = T_NUMBER'LAST then
+    if V_Index = T_Number'Last then
 
-      V_NUMBER := V_BINGO_ARRAY (T_NUMBER'LAST);
+      V_Number := V_Bingo_Array (T_Number'Last);
 
-      V_LAST_NUMBER := TRUE;
+      V_Last_Number := True;
 
-      V_CURRENT_INDEX := V_INDEX;
+      V_Current_Index := V_Index;
 
     else
 
-      V_NUMBER := V_BINGO_ARRAY (V_INDEX);
+      V_Number := V_Bingo_Array (V_Index);
 
-      V_CURRENT_INDEX := V_INDEX;
+      V_Current_Index := V_Index;
 
-      V_INDEX := V_INDEX + 1;
+      V_Index := V_Index + 1;
 
-      V_LAST_NUMBER := FALSE;
+      V_Last_Number := False;
 
     end if;
 
-    Q_Sound.P_PLAY_NUMBER (V_Bingo_Array (V_Current_Index));
+    Q_Sound.P_Play_Number (V_Bingo_Array (V_Current_Index));
 
-  end P_SPIN;
-
-  --==================================================================
-
-  function F_GET_NUMBER (V_INDEX : T_NUMBER) return T_NUMBER is
-     (V_BINGO_ARRAY (V_INDEX));
+  end P_Spin;
 
   --==================================================================
 
-  function F_GET_CURRENT_INDEX return T_NUMBER is (V_Index);
+  function F_Get_Number (V_Index : T_Number) return T_Number is
+     (V_Bingo_Array (V_Index));
 
   --==================================================================
 
-end Q_BINGO.Q_BOMBO;
+  function F_Get_Current_Index return T_Number is (V_Index);
+
+  --==================================================================
+
+end Q_Bingo.Q_Bombo;

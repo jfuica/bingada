@@ -8,32 +8,32 @@
 --*
 --*****************************************************************************
 
-with ADA.CONTAINERS.VECTORS;
+with Ada.Containers.Vectors;
 
-with Q_BINGO;
+with Q_Bingo;
 
-package Q_CSV.Q_READ_FILE is
+package Q_Csv.Q_Read_File is
 
-  C_MAX_CARD_NAME : constant := 5;
+  C_Max_Card_Name : constant := 5;
 
-  subtype T_NAME is STRING (1 .. C_MAX_CARD_NAME);
+  subtype T_Name is String (1 .. C_Max_Card_Name);
 
-  C_NUMBERS_IN_A_CARD : constant := 15;
+  C_Numbers_In_A_Card : constant := 15;
 
-  type T_NUMBERS is array (1 .. C_NUMBERS_IN_A_CARD) of Q_BINGO.T_NUMBER;
+  type T_Numbers is array (1 .. C_Numbers_In_A_Card) of Q_Bingo.T_Number;
 
-  type T_CARD is
+  type T_Card is
     record
-      R_NAME    : T_NAME;
-      R_NUMBERS : T_NUMBERS;
+      R_Name    : T_Name;
+      R_Numbers : T_Numbers;
     end record;
 
-  package Q_BINGO_CARDS is new ADA.CONTAINERS.VECTORS
-     (Index_Type   => NATURAL,
-      Element_Type => T_CARD);
+  package Q_Bingo_Cards is new Ada.Containers.Vectors
+     (Index_Type   => Natural,
+      Element_Type => T_Card);
 
-  procedure P_READ_BINGO_CARDS
-     (V_FILE_NAME : STRING;
-      V_CARDS     : out Q_BINGO_CARDS.VECTOR);
+  procedure P_Read_Bingo_Cards
+     (V_File_Name : String;
+      V_Cards     : out Q_Bingo_Cards.Vector);
 
-end Q_CSV.Q_READ_FILE;
+end Q_Csv.Q_Read_File;

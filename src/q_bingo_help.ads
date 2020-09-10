@@ -8,10 +8,10 @@
 --*
 --*****************************************************************************
 
-with GTK.WINDOW;
+with Gtk.Window;
 
-package Q_BINGO_HELP is
+package Q_Bingo_Help is
 
-  procedure P_SHOW_WINDOW (V_PARENT_WINDOW : GTK.WINDOW.GTK_WINDOW);
+  procedure P_Show_Window (V_Parent_Window : Gtk.Window.Gtk_Window);
 
-end Q_BINGO_HELP;
+end Q_Bingo_Help;

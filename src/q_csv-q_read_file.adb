@@ -8,92 +8,92 @@
 --*
 --*****************************************************************************
 
-with ADA.EXCEPTIONS;
+with Ada.Exceptions;
 
-with TEXT_IO;
+with Text_Io;
 
-package body Q_CSV.Q_READ_FILE is
-
-  --==================================================================
-
-  V_FILE : TEXT_IO.FILE_TYPE;
+package body Q_Csv.Q_Read_File is
 
   --==================================================================
 
-  procedure P_READ_CARDS_IN_VECTOR (V_FILE  : TEXT_IO.FILE_TYPE;
-                                    V_CARDS : in out Q_BINGO_CARDS.VECTOR) is
+  V_File : Text_Io.File_Type;
 
-    V_ROW : T_ROW := F_LINE (TEXT_IO.GET_LINE (V_FILE));
+  --==================================================================
 
-    V_FIRST_COL : BOOLEAN;
+  procedure P_Read_Cards_In_Vector (V_File  : Text_Io.File_Type;
+                                    V_Cards : in out Q_Bingo_Cards.Vector) is
 
-    V_NUMBERS : T_NUMBERS;
+    V_Row : T_Row := F_Line (Text_Io.Get_Line (V_File));
 
-    V_INDEX : POSITIVE := 1;
+    V_First_Col : Boolean;
 
-    V_CARD_NAME : T_NAME;
+    V_Numbers : T_Numbers;
+
+    V_Index : Positive := 1;
+
+    V_Card_Name : T_Name;
 
   begin
 
-    V_FIRST_COL := V_ROW.F_NEXT;
+    V_First_Col := V_Row.F_Next;
 
-    V_CARD_NAME := V_ROW.F_ITEM (T_NAME'RANGE);
+    V_Card_Name := V_Row.F_Item (T_Name'Range);
 
-    while V_ROW.F_NEXT loop
+    while V_Row.F_Next loop
 
-      V_NUMBERS (V_INDEX) := Q_BINGO.T_NUMBER'VALUE (V_ROW.F_ITEM);
+      V_Numbers (V_Index) := Q_Bingo.T_Number'Value (V_Row.F_Item);
 
-      V_INDEX := V_INDEX + 1;
+      V_Index := V_Index + 1;
 
     end loop;
 
-    V_CARDS.APPEND ((R_NAME    => V_CARD_NAME,
-                     R_NUMBERS => V_NUMBERS));
+    V_Cards.Append ((R_Name    => V_Card_Name,
+                     R_Numbers => V_Numbers));
 
-  end P_READ_CARDS_IN_VECTOR;
+  end P_Read_Cards_In_Vector;
 
   --==================================================================
 
-  procedure P_READ_BINGO_CARDS
-     (V_FILE_NAME : STRING;
-      V_CARDS     : out Q_BINGO_CARDS.VECTOR) is
+  procedure P_Read_Bingo_Cards
+     (V_File_Name : String;
+      V_Cards     : out Q_Bingo_Cards.Vector) is
 
   begin
 
-    TEXT_IO.OPEN (FILE => V_FILE,
-                  MODE => TEXT_IO.IN_FILE,
-                  NAME => V_FILE_NAME);
+    Text_Io.Open (File => V_File,
+                  Mode => Text_Io.In_File,
+                  Name => V_File_Name);
 
-    if TEXT_IO.IS_OPEN (V_FILE) then
+    if Text_Io.Is_Open (V_File) then
 
       -- skip header
       --
-      TEXT_IO.SKIP_LINE (V_FILE);
+      Text_Io.Skip_Line (V_File);
 
-      while not TEXT_IO.END_OF_FILE (V_FILE) loop
+      while not Text_Io.End_Of_File (V_File) loop
 
-        P_READ_CARDS_IN_VECTOR (V_FILE  => V_FILE,
-                                V_CARDS => V_CARDS);
+        P_Read_Cards_In_Vector (V_File  => V_File,
+                                V_Cards => V_Cards);
       end loop;
 
     end if;
 
-    TEXT_IO.CLOSE (V_FILE);
+    Text_Io.Close (V_File);
 
   exception
 
-    when V_EXCEPTION : others =>
+    when V_Exception : others =>
 
       -- No exception is raised because if the csv file is not correctly read
       -- the bingada can continue without cards to check.
       --
-      TEXT_IO.CLOSE (V_FILE);
+      Text_Io.Close (V_File);
 
-      TEXT_IO.PUT_LINE
-         ("exception : " & ADA.EXCEPTIONS.EXCEPTION_INFORMATION (V_EXCEPTION));
+      Text_Io.Put_Line
+         ("exception : " & Ada.Exceptions.Exception_Information (V_Exception));
 
-  end P_READ_BINGO_CARDS;
+  end P_Read_Bingo_Cards;
 
   --==================================================================
 
-end Q_CSV.Q_READ_FILE;
+end Q_Csv.Q_Read_File;

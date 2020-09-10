@@ -1,17 +1,17 @@
-with GTK.MAIN;
-with Q_BINGADA;
+with Gtk.Main;
+with Q_Bingada;
 
-procedure BINGADA is
+procedure Bingada is
 
 begin
 
-   GTK.MAIN.INIT;
+   Gtk.Main.Init;
 
-   Q_BINGADA.P_CREATE_WIDGETS;
+   Q_Bingada.P_Create_Widgets;
 
    -- All GTK applications must have a Gtk.Main.Main. Control ends here
    -- and waits for an event to occur (like a key press or a mouse event),
    -- until Gtk.Main.Main_Quit is called.
-   GTK.MAIN.MAIN;
+   Gtk.Main.Main;
 
-end BINGADA;
+end Bingada;

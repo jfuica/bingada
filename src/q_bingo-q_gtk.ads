@@ -8,6 +8,6 @@
 --*
 --*****************************************************************************
 
-package Q_BINGO.Q_GTK is
+package Q_Bingo.Q_Gtk is
 
-end Q_BINGO.Q_GTK;
+end Q_Bingo.Q_Gtk;

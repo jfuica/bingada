@@ -1,45 +1,45 @@
-package body Q_CSV is
+package body Q_Csv is
 
   --==================================================================
 
-  function F_LINE (V_LINE      : String;
-                   V_SEPARATOR : Character := ';') return T_ROW is
+  function F_Line (V_Line      : String;
+                   V_Separator : Character := ';') return T_Row is
 
-    (V_LENGTH => V_LINE'LENGTH,
-     R_STR    => V_LINE,
-     R_FIRST  => V_LINE'FIRST,
-     R_LAST   => V_LINE'LAST,
-     R_NEXT   => V_LINE'FIRST,
-     R_SEP    => V_SEPARATOR);
+    (V_Length => V_Line'Length,
+     R_Str    => V_Line,
+     R_First  => V_Line'First,
+     R_Last   => V_Line'Last,
+     R_Next   => V_Line'First,
+     R_Sep    => V_Separator);
 
-  function F_ITEM (V_ROW : T_ROW) return STRING is
-    (V_ROW.R_STR (V_ROW.R_FIRST .. V_ROW.R_LAST));
+  function F_Item (V_Row : T_Row) return String is
+    (V_Row.R_Str (V_Row.R_First .. V_Row.R_Last));
 
-  function F_NEXT (V_ROW : in out T_ROW) return BOOLEAN is
+  function F_Next (V_Row : in out T_Row) return Boolean is
 
-    V_LAST : NATURAL := V_ROW.R_NEXT;
+    V_Last : Natural := V_Row.R_Next;
 
   begin
 
-    V_ROW.R_FIRST := V_ROW.R_NEXT;
+    V_Row.R_First := V_Row.R_Next;
 
-    while V_LAST <= V_ROW.R_STR'LAST and then
-       V_ROW.R_STR (V_Last) /= V_ROW.R_SEP loop
+    while V_Last <= V_Row.R_Str'Last and then
+       V_Row.R_Str (V_Last) /= V_Row.R_Sep loop
 
       -- find Separator
 
-      V_LAST := V_LAST + 1;
+      V_Last := V_Last + 1;
 
     end loop;
 
-    V_ROW.R_LAST := V_LAST - 1;
+    V_Row.R_Last := V_Last - 1;
 
-    V_ROW.R_NEXT := V_LAST + 1;
+    V_Row.R_Next := V_Last + 1;
 
-    return (V_ROW.R_FIRST <= V_ROW.R_STR'LAST);
+    return (V_Row.R_First <= V_Row.R_Str'Last);
 
-  end F_NEXT;
+  end F_Next;
 
   --==================================================================
 
-end Q_CSV;
+end Q_Csv;

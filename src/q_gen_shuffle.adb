@@ -1,16 +1,16 @@
 with Ada.Numerics.Discrete_Random;
 
-package body Q_GEN_SHUFFLE is
+package body Q_Gen_Shuffle is
 
 
   procedure P_Shuffle (List : in out Array_Type) is
 
-    package Discrete_Random is new Ada.Numerics.DISCRETE_RANDOM
-       (Result_Subtype => POSITIVE);
+    package Discrete_Random is new Ada.Numerics.Discrete_Random
+       (Result_Subtype => Positive);
 
     use Discrete_Random;
 
-    K : POSITIVE;
+    K : Positive;
     G : Generator;
     T : Element_Type;
   begin
@@ -23,4 +23,4 @@ package body Q_GEN_SHUFFLE is
     end loop;
   end P_Shuffle;
 
-end Q_GEN_SHUFFLE;
+end Q_Gen_Shuffle;

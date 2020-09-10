@@ -8,41 +8,41 @@
 --*
 --*****************************************************************************
 
-with GTKADA.INTL;
+with Gtkada.Intl;
 
-with TEXT_IO;
+with Text_Io;
 
-package body Q_BINGO.Q_GTK.Q_INTL is
+package body Q_Bingo.Q_Gtk.Q_Intl is
 
   --==================================================================
   --C_PATH : CONSTANT STRING := "/usr/local/share/locale";
 
-  procedure P_INITIALISE is
+  procedure P_Initialise is
 
   begin
 
-    if GTKADA.INTL.GETLOCALE = "C" then
+    if Gtkada.Intl.Getlocale = "C" then
 
-      GTKADA.INTL.SETLOCALE
-         (CATEGORY => GTKADA.INTL.LC_MESSAGES,LOCALE => "en_GB");
+      Gtkada.Intl.Setlocale
+         (Category => Gtkada.Intl.Lc_Messages,Locale => "en_GB");
 
-      TEXT_IO.PUT_LINE ("DEFAULT LOCALE changed to : " & GTKADA.INTL.GETLOCALE);
+      Text_Io.Put_Line ("DEFAULT LOCALE changed to : " & Gtkada.Intl.Getlocale);
 
     else
 
-      GTKADA.INTL.SETLOCALE;
+      Gtkada.Intl.Setlocale;
 
     end if;
 
-    GTKADA.INTL.BIND_TEXT_DOMAIN
-       (DOMAIN  => "bingada",
-        DIRNAME => "./messages");
+    Gtkada.Intl.Bind_Text_Domain
+       (Domain  => "bingada",
+        Dirname => "./messages");
 
-    GTKADA.INTL.TEXT_DOMAIN ("bingada");
+    Gtkada.Intl.Text_Domain ("bingada");
 
-  end P_INITIALISE;
+  end P_Initialise;
 
   --==================================================================
 
 
-end Q_BINGO.Q_GTK.Q_INTL;
+end Q_Bingo.Q_Gtk.Q_Intl;

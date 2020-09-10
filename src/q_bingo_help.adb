@@ -8,73 +8,73 @@
 --*
 --*****************************************************************************
 
-with GTK.ABOUT_DIALOG;
-with GTK.DIALOG;
+with Gtk.About_Dialog;
+with Gtk.Dialog;
 
-package body Q_BINGO_HELP is
+package body Q_Bingo_Help is
 
-  use type GTK.DIALOG.GTK_RESPONSE_TYPE;
+  use type Gtk.Dialog.Gtk_Response_Type;
 
   --==================================================================
 
-  procedure P_SHOW_WINDOW (V_PARENT_WINDOW : GTK.WINDOW.GTK_WINDOW) is
+  procedure P_Show_Window (V_Parent_Window : Gtk.Window.Gtk_Window) is
 
-    V_DIALOG : GTK.ABOUT_DIALOG.GTK_ABOUT_DIALOG;
+    V_Dialog : Gtk.About_Dialog.Gtk_About_Dialog;
 
   begin
 
-    GTK.ABOUT_DIALOG.GTK_NEW (V_DIALOG);
+    Gtk.About_Dialog.Gtk_New (V_Dialog);
 
-    GTK.ABOUT_DIALOG.SET_TRANSIENT_FOR (V_DIALOG, V_PARENT_WINDOW);
+    Gtk.About_Dialog.Set_Transient_For (V_Dialog, V_Parent_Window);
 
-    GTK.ABOUT_DIALOG.SET_DESTROY_WITH_PARENT (V_DIALOG, TRUE);
+    Gtk.About_Dialog.Set_Destroy_With_Parent (V_Dialog, True);
 
-    GTK.ABOUT_DIALOG.SET_MODAL (V_DIALOG, TRUE);
+    Gtk.About_Dialog.Set_Modal (V_Dialog, True);
 
-    GTK.ABOUT_DIALOG.ADD_CREDIT_SECTION
-       (About        => V_DIALOG,
+    Gtk.About_Dialog.Add_Credit_Section
+       (About        => V_Dialog,
         Section_Name => "Beta Testers : ",
         People       =>
-           (1 => new STRING'("Wife"),
-            2 => new STRING'("Sons")));
+           (1 => new String'("Wife"),
+            2 => new String'("Sons")));
 
-    GTK.ABOUT_DIALOG.SET_AUTHORS
+    Gtk.About_Dialog.Set_Authors
        (V_Dialog,
         (1 => new String'("Javier Fuica Fernandez <jafuica@gmail.com>")));
 
-    GTK.ABOUT_DIALOG.Set_Comments (V_Dialog, "Bingo application in GTKAda");
+    Gtk.About_Dialog.Set_Comments (V_Dialog, "Bingo application in GTKAda");
 
-    GTK.ABOUT_DIALOG.SET_LICENSE
+    Gtk.About_Dialog.Set_License
        (V_Dialog,
         "This library is free software; you can redistribute it and/or"
            & " modify it under the terms of the GNU General Public"
            & " License as published by the Free Software Foundation; either"
            & " version 2 of the License, or (at your option) any later version."
-           & ASCII.LF
+           & Ascii.Lf
            & "This library is distributed in the hope that it will be useful,"
            & " but WITHOUT ANY WARRANTY; without even the implied warranty of"
            & " MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the"
            & " GNU General Public License for more details.");
 
-    GTK.ABOUT_DIALOG.SET_WRAP_LICENSE (V_Dialog, True);
+    Gtk.About_Dialog.Set_Wrap_License (V_Dialog, True);
 
-    GTK.ABOUT_DIALOG.SET_PROGRAM_NAME (V_Dialog, "BingAda");
+    Gtk.About_Dialog.Set_Program_Name (V_Dialog, "BingAda");
 
-    GTK.ABOUT_DIALOG.SET_VERSION (V_Dialog, "0.9 Beta");
+    Gtk.About_Dialog.Set_Version (V_Dialog, "0.9 Beta");
 
-    if GTK.ABOUT_DIALOG.Run (V_Dialog) /= GTK.DIALOG.GTK_RESPONSE_CLOSE then
+    if Gtk.About_Dialog.Run (V_Dialog) /= Gtk.Dialog.Gtk_Response_Close then
       --  Dialog was destroyed by user, not closed through Close button
       null;
     end if;
 
-    GTK.ABOUT_DIALOG.Destroy (V_Dialog);
+    Gtk.About_Dialog.Destroy (V_Dialog);
 
      --GTK.ABOUT_DIALOG.ON_ACTIVATE_LINK (V_DIALOG,P_ON_ACTIVATE_LINK'Access);
 
     --GTK.ABOUT_DIALOG.DESTROY (V_DIALOG);
 
-  end P_SHOW_WINDOW;
+  end P_Show_Window;
 
   --==================================================================
 
-end Q_BINGO_HELP;
+end Q_Bingo_Help;

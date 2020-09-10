@@ -8,16 +8,16 @@
 --*
 --*****************************************************************************
 
-package Q_BINGO.Q_BOMBO is
+package Q_Bingo.Q_Bombo is
 
-  procedure P_INIT;
+  procedure P_Init;
 
-  procedure P_SPIN (V_NUMBER        : out POSITIVE;
-                    V_CURRENT_INDEX : out T_NUMBER;
-                    V_LAST_NUMBER   : out BOOLEAN);
+  procedure P_Spin (V_Number        : out Positive;
+                    V_Current_Index : out T_Number;
+                    V_Last_Number   : out Boolean);
 
-  function F_GET_NUMBER (V_INDEX : T_NUMBER) return T_NUMBER;
+  function F_Get_Number (V_Index : T_Number) return T_Number;
 
-  function F_GET_CURRENT_INDEX return T_NUMBER;
+  function F_Get_Current_Index return T_Number;
 
-end Q_BINGO.Q_BOMBO;
+end Q_Bingo.Q_Bombo;
