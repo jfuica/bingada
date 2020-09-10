@@ -9,7 +9,7 @@
 --*****************************************************************************
 
 package Q_BINGO.Q_GTK.Q_INTL is
-  
+
   procedure P_INITIALISE;
-  
+
 end Q_BINGO.Q_GTK.Q_INTL;

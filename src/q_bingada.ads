@@ -9,7 +9,7 @@
 --*****************************************************************************
 
 package Q_BINGADA is
-  
+
   procedure P_CREATE_WIDGETS;
-  
+
 end Q_BINGADA;
