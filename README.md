@@ -3,12 +3,12 @@
 
 # bingada
 
-Bingo application in GTKAda
+Bingo application in GtkAda
 
 This is a simple bingo application called BingAda (Bingo + Ada), to play bingo at home with your family during this COVID19 "stay at home" time.
 
 
-The Bingo is fully functional, you can :
+The Bingo is fully functional, you can:
 
 - Start a new game.
 
@@ -28,10 +28,10 @@ The Bingo is fully functional, you can :
 
 # Dependencies
 
-- GTKAda: independently installed
+- GtkAda: independently installed
 - canberra-ada: used as a git submodule
 
-In order to build libcanberra (instructions for Linux):
+In order to build libcanberra (only for Linux):
 
 ```
 git clone --recursive https://github.com/jfuica/bingada
@@ -45,13 +45,14 @@ Required packages are listed in https://github.com/onox/canberra-ada
 
 - Install the GNAT Community Edition for your Operating System version.
 
-- Install GTKAda Community Edition and set the default path where you installed
+- Install GtkAda Community Edition and set the default path where you installed
   the gnat.
 
-- For gtkada I set C:/GNAT/2019/gtkada (The previous gnat path is needed to be
-set, because the gtkada needs to be compiled).
+- You might need to adjust bingada.gpr, like setting the path to your gtkada.gpr file or removing the line importing the canberra-ada project, since it is not supported in Windows (see issue #11).
 
 - You can open the gtkada.gpr file using GPS, or compile with gprbuild -p bingada
+
+- You need to copy GtkAda DLL files to your execution directory to run bingada.
 
 # Installation under Ubuntu 16.04 using FSF GNAT
 
@@ -72,11 +73,11 @@ gprbuild -p bingada
 # Wishes / TODO
 
 
-The interface is really simple, and it could be improved, but, I think the main goals could be :
+The interface is really simple, and it could be improved, but, I think the main goals could be:
 
 - Cards shown in a table.
 
-- Get better recording of numbers for each language
+- Get better recording of numbers for each language.
 
 - Include status message (Stop/start..)
 

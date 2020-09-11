@@ -1,10 +1,14 @@
+-- Add path to your gtkada installation if it is not found by gprbuild, e.g.:
 --with "/opt/COTS/gtkada-2019/lib/gnat/gtkada";
 with "gtkada.gpr";
+
+-- Delete this line under Windows, since canberra is not supported and won't
+-- link.
 with "libs/canberra-ada/tools/canberra.gpr";
 
 project bingada is
 
-   type T_OS is ("Windows", "Linux");
+   type T_OS is ("Windows_NT", "Linux");
    V_OS : T_OS := external ("OS", "Linux");
 
    for Source_Dirs use ("src");
@@ -13,7 +17,7 @@ project bingada is
 
    package Naming is
        case V_OS is
-         when "Windows" =>
+         when "Windows_NT" =>
             for Body("Q_Sound") use "q_sound.null.adb";
          when others =>
             for Body("Q_Sound") use "q_sound.adb";
