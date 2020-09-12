@@ -1,0 +1,67 @@
+GtkButton {
+    background-image: none;
+}
+
+#myButton_white,
+#myButton_white > label {
+    background-color: #383c4a;
+    color: #cc575d;
+    font-family: DejaVu Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: xx-large;
+    border-radius: 0px;
+}
+
+#myButton_blue,
+#myButton_blue > label {
+    background-color: #5294e2;
+    color: #383c4a;
+    font-family: DejaVu Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: xx-large;
+}
+
+#myButton_previous_1,
+#myButton_previous_1 > label {
+    background-color: #4073b0;
+    color: #d3dae3;
+    font-family: DejaVu Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: xx-large;
+    border-radius: 10px;
+}
+
+#myButton_previous_2,
+#myButton_previous_2 > label {
+    background-color: #2d527d;
+    color: #d3dae3;
+    font-family: DejaVu Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: xx-large;
+    border-radius: 10px;
+}
+
+#myButton_previous_3,
+#myButton_previous_3 > label {
+    background-color: #1b304a;
+    color: #d3dae3;
+    font-family: DejaVu Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: xx-large;
+    border-radius: 10px;
+}
+
+#myButton_white:hover,
+#myButton_blue:hover{
+   background-color: grey;
+   color: blue;
+}
+
+#drum_button {
+     background-color: #383c4a;
+}

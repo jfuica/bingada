@@ -61,13 +61,13 @@ package body Q_Bingada is
 
   V_First_Bombo : Positive := 1;
 
+  V_Dark_Style : Boolean := False;
+
   V_Bombo_Button : Gtk.Button.Gtk_Button;
 
   --==================================================================
 
-  procedure P_Load_Css is
-
-    C_Colours_Conf_Filename : constant String := "bingada.css";
+  procedure P_Load_Css (V_Filename : String) is
 
   begin
 
@@ -85,7 +85,7 @@ package body Q_Bingada is
         Value  => True);
 
     Gtkada.Style.Load_Css_File
-       (Path     => C_Colours_Conf_Filename,
+       (Path     => V_Filename,
         Error    => Text_Io.Put_Line'Access,
         Priority => Gtk.Style_Provider.Priority_Application);
 
@@ -573,7 +573,8 @@ package body Q_Bingada is
 
     V_Vertical_Box : Gtk.Box.Gtk_Box;
 
-    V_Bombo_Icon : Gdk.Pixbuf.Gdk_Pixbuf;
+    C_Icon : constant String := "bingada.png";
+    V_Icon : Gdk.Pixbuf.Gdk_Pixbuf;
 
     V_Icon_Error : Glib.Error.Gerror;
 
@@ -589,12 +590,12 @@ package body Q_Bingada is
     Gtk.Window.Set_Title (V_Main_Window, "BingAda");
 
     Gdk.Pixbuf.Gdk_New_From_File
-      (Pixbuf   => V_Bombo_Icon,
-       Filename => C_Bombo_File,
+      (Pixbuf   => V_Icon,
+       Filename => C_Icon,
        Error    => V_Icon_Error);
 
     Gtk.Window.Set_Default_Icon
-      (Icon   => V_Bombo_Icon);
+      (Icon   => V_Icon);
 
     -- |--- Vertical BOX |
     -- |                 |
@@ -780,6 +781,35 @@ package body Q_Bingada is
 
   --==================================================================
 
+  procedure P_Load_Style is
+
+    C_Default_Css_File : constant String := "bingada.css";
+    C_Dark_Css_File : constant String := "bingada-dark.css";
+
+  begin
+
+    P_Load_Css (V_Filename => (if V_Dark_Style then C_Dark_Css_File
+                               else C_Default_Css_File));
+
+    V_Dark_Style := not V_Dark_Style;
+
+  end P_Load_Style;
+
+  --==================================================================
+
+  procedure P_Toggle_Style
+     (V_Object : access Gtk.Menu_Item.Gtk_Menu_Item_Record'Class) is
+
+    pragma Unreferenced (V_Object);
+
+  begin
+
+    P_Load_Style;
+
+  end p_toggle_style;
+
+  --==================================================================
+
   procedure P_Init_Bingo is
 
   begin
@@ -851,7 +881,7 @@ package body Q_Bingada is
   procedure P_Create_Game_Menu
      (V_Game_Menu_Item : out Gtk.Menu_Item.Gtk_Menu_Item) is
 
-    V_New_Game, V_Auto_Start, V_Pause, V_Check_Cards, V_Exit,
+    V_New_Game, V_Auto_Start, V_Pause, V_Check_Cards, V_Toggle_Style, V_Exit,
        V_Help : Gtk.Menu_Item.Gtk_Menu_Item;
 
     V_Game_Menu : Gtk.Menu.Gtk_Menu;
@@ -871,6 +901,9 @@ package body Q_Bingada is
 
     Gtk.Menu_Item.Gtk_New_With_Mnemonic
        (V_Check_Cards, -"menu_check_cards");
+
+    Gtk.Menu_Item.Gtk_New_With_Mnemonic
+       (V_Toggle_Style, -"menu_toggle_style");
 
     Gtk.Menu_Item.Gtk_New_With_Mnemonic
        (V_Exit, -"menu_exit");
@@ -898,6 +931,9 @@ package body Q_Bingada is
 
     Gtk.Menu.Append (Menu_Shell => V_Game_Menu,
                      Child      => V_Check_Cards);
+
+    Gtk.Menu.Append (Menu_Shell => V_Game_Menu,
+                     Child      => V_Toggle_Style);
 
     Gtk.Menu.Append (Menu_Shell => V_Game_Menu,
                      Child      => V_Help);
@@ -930,6 +966,11 @@ package body Q_Bingada is
         P_Check_Cards'Access);
 
      P_Menu_Item_Handler.Connect
+       (V_Toggle_Style,
+        "activate",
+        P_Toggle_Style'Access);
+
+    P_Menu_Item_Handler.Connect
        (V_Exit,
         "activate",
         P_Exit_Bingo'Access);
@@ -980,7 +1021,7 @@ package body Q_Bingada is
 
     Q_Bingo.Q_Gtk.Q_Intl.P_Initialise;
 
-    P_Load_Css;
+    P_Load_Style;
 
     P_Create_Upper_Area (V_Upper_Area => V_Upper_Area);
 
