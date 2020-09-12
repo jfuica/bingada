@@ -85,7 +85,8 @@ The interface is really simple, and it could be improved, but, I think the main 
 
 # Attribution
 
-Audio recordings of numbers have been obtained from Wikimedia Commons:
+Audio recordings of numbers have been obtained from:
 
-- https://commons.wikimedia.org/wiki/Category:English_pronunciation_of_numbers
-- https://commons.wikimedia.org/wiki/Category:German_pronunciation_of_numbers
+- [English by NumberOne from Wikimedia Commons](https://commons.wikimedia.org/wiki/Category:English_pronunciation_of_numbers)
+- [German from Wikimedia Commons](https://commons.wikimedia.org/wiki/Category:German_pronunciation_of_numbers)
+- [Spanish by Sergeeo from freesound.org](https://freesound.org/people/sergeeo/sounds/177270/)
