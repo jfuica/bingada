@@ -63,6 +63,8 @@ package body Q_Bingada is
 
   V_Dark_Style : Boolean := False;
 
+  V_Is_In_Fullscreen : Boolean := False;
+
   V_Bombo_Button : Gtk.Button.Gtk_Button;
 
   --==================================================================
@@ -439,8 +441,6 @@ package body Q_Bingada is
      (V_Object : access Gtk.Widget.Gtk_Widget_Record'Class;
       V_Event  : Gdk.Event.Gdk_Event) return Boolean is
 
-    pragma Unreferenced (V_Object);
-
     C_Key_Val : constant Gdk.Types.Gdk_Key_Type :=
        Gdk.Event.Get_Key_Val (V_Event);
 
@@ -451,13 +451,35 @@ package body Q_Bingada is
     --       (GDK.EVENT.GET_BUTTON (V_EVENT)) & " key val " &
     --       GDK.TYPES.GDK_KEY_TYPE'IMAGE (GDK.EVENT.GET_KEY_VAL (V_EVENT)));
 
-    if C_Key_Val in Gdk.Types.Keysyms.Gdk_Lc_S |
-       Gdk.Types.Keysyms.Gdk_S |
-       Gdk.Types.Keysyms.Gdk_Space then
+    case C_Key_Val is
+       when Gdk.Types.Keysyms.Gdk_Lc_S |
+         Gdk.Types.Keysyms.Gdk_S |
+         Gdk.Types.Keysyms.Gdk_Space =>
 
-      P_Start_Pause_Bingo;
+         P_Start_Pause_Bingo;
 
-    end if;
+       when Gdk.Types.Keysyms.Gdk_F11 =>
+
+         if V_Is_In_Fullscreen then
+
+           Gtk.Window.Gtk_Window(V_Object).Unfullscreen;
+           V_Is_In_Fullscreen := False;
+
+         else
+
+           Gtk.Window.Gtk_Window(V_Object).Fullscreen;
+           V_Is_In_Fullscreen := True;
+         end if;
+
+       when Gdk.Types.Keysyms.Gdk_Escape =>
+
+         Gtk.Window.Gtk_Window(V_Object).Unfullscreen;
+         V_Is_In_Fullscreen := False;
+
+       when others =>
+
+         null;
+    end case;
 
     return True;
 
