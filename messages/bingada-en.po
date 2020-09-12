@@ -15,6 +15,9 @@ msgstr "_Pause"
 msgid "menu_check_cards"
 msgstr "_Check Cards"
 
+msgid "menu_toggle_style"
+msgstr "Toggle _Style"
+
 msgid "menu_exit"
 msgstr "E_xit"
 

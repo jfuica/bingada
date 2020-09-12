@@ -15,6 +15,9 @@ msgstr "_Pausieren"
 msgid "menu_check_cards"
 msgstr "_Karten prüfen"
 
+msgid "menu_toggle_style"
+msgstr "_Stil schalten"
+
 msgid "menu_exit"
 msgstr "_Beenden"
 
@@ -22,4 +25,4 @@ msgid "menu_help"
 msgstr "_Hilfe"
 
 msgid "main_menu"
-msgstr "_Spiel"
+msgstr "S_piel"
