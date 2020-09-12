@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=BingAda
+Comment=Bingo application in GtkAda
+Comment[de]=Bingo Anwendung in GtkAda
+Comment[es]=Aplicación de bingo en GtkAda
+Exec=bingada
+Icon=bingada
+Terminal=true
+Type=Application
+Categories=Game;
+
