@@ -24,22 +24,40 @@ The Bingo is fully functional, you can:
 
 - Translations: English, Spanish, German.
 
-- Colors configurable using bingada.css
+- Colors configurable using `bingada.css`. Two styles provided: light and dark.
 
 # Dependencies
 
 - GtkAda: independently installed
-- canberra-ada: used as a git submodule
+- Sound: two alternative libraries are supported:
+    - canberra-ada: used as a git submodule
+    - sfmlAudio: copied into this repository from
+      [RufasSock](https://github.com/fastrgv/RufasSok)
 
-In order to build libcanberra (only for Linux):
+You can choose the sound alternative in this way:
+`gprbuild -XSOUND_LIB="sfml"`
+
+where the possible values for SOUND_LIB are "canberra", "sfml" and "none"
+(default, "canberra").
+
+# Sound: canberra-ada
+
+In order to build canberra-ada (only for Linux):
 
 ```
 git clone --recursive https://github.com/jfuica/bingada
 cd libs/canberra-ada
 make
 ```
-
 Required packages are listed in https://github.com/onox/canberra-ada
+
+# Sound: sfmlAudio
+
+SfmlAudio is build as part of the project. Edit `bingada.gpr` to remove
+this dependency if it cannot be built.
+
+sfmlAudio has been tested in Linux but it is supposed to work in Windows as
+well.
 
 # Linux/Windows Install using GNAT Community Edition
 
@@ -48,7 +66,7 @@ Required packages are listed in https://github.com/onox/canberra-ada
 - Install GtkAda Community Edition and set the default path where you installed
   the gnat.
 
-- You might need to adjust bingada.gpr, like setting the path to your gtkada.gpr file or removing the line importing the canberra-ada project, since it is not supported in Windows (see issue #11).
+- You might need to adjust `bingada.gpr`, like setting the path to your `gtkada.gpr` file or removing the line importing the canberra-ada project, since it is not supported in Windows (see issue #11).
 
 - You can open the gtkada.gpr file using GPS, or compile with gprbuild -p bingada
 
@@ -68,7 +86,7 @@ gprbuild -p bingada
 ```
 ./obj/bingada
 ```
-- Or you can install "bombo.png", "media" directory, bingada.css and "bingada" to any location and run from there.
+- Or you can install using `make install DESTDIR=destination` and run from there.
 
 # Wishes / TODO
 
