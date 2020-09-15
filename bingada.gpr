@@ -4,7 +4,7 @@ with "gtkada.gpr";
 
 -- Delete this line under Windows, since canberra is not supported and won't
 -- link.
---with "libs/canberra-ada/tools/canberra.gpr";
+with "libs/canberra-ada/tools/canberra.gpr";
 
 -- Delete this line if sfmlAudio does not build and choose another option
 -- for SOUND_LIB.
