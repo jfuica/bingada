@@ -38,7 +38,7 @@ You can choose the sound alternative in this way:
 `gprbuild -XSOUND_LIB="sfml"`
 
 where the possible values for SOUND_LIB are "canberra", "sfml" and "none"
-(default, "canberra").
+(default: "canberra", which under Windows is equivalent to "none").
 
 # Sound: canberra-ada
 
@@ -56,8 +56,9 @@ Required packages are listed in https://github.com/onox/canberra-ada
 SfmlAudio is build as part of the project. Edit `bingada.gpr` to remove
 this dependency if it cannot be built.
 
-sfmlAudio has been tested in Linux but it is supposed to work in Windows as
-well.
+sfmlAudio works in both in Windows and Linux.
+
+See instructions in libs/sfmlAudio/README.md
 
 # Linux/Windows Install using GNAT Community Edition
 

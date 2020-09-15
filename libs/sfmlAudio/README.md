@@ -4,6 +4,18 @@ extracted from the source release in https://github.com/fastrgv/RufasSok
 `mxlup` and `mxsnd` in `snd4ada.cpp` have been increased to fit
 BingAda purposes. Originally they valued 10.
 
+# Building in Linux
+Install the development package for SFML from your distribution. For example,
+under Ubuntu Linux:
+`sudo apt install libsfml-dev`
+
+# Building in Windows
+ownload [SFML distribution for Windows](https://www.sfml-dev.org/download.php)
+and extract, under `D:\Libraries\SFML-2.5.1\` or update the location in
+`sfmlAudio.gpr`
+
+# Copying
+
 Copyright (C) 2017  <fastrgv@gmail.com>
 
 This program is free software: you can redistribute it and/or modify

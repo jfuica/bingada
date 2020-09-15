@@ -60,7 +60,7 @@ package body Q_Sound is
 
   --==================================================================
 
-  procedure P_Initiliaze is
+  procedure P_Initialize is
 
   begin
 

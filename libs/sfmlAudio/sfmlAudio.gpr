@@ -1,6 +1,10 @@
 
 library project SfmlAudio is
 
+
+   type T_OS is ("Windows_NT", "Linux");
+   V_OS : T_OS := external ("OS", "Linux");
+
    for Languages use ("Ada", "C++");
 
    for Create_Missing_Dirs use "True";
@@ -13,8 +17,22 @@ library project SfmlAudio is
    for Library_ALI_Dir use "lib";
    for Library_Kind use "static";
 
+  package Compiler is
+    case V_OS is
+      when "Windows_NT" =>
+        for Default_Switches ("C++") use ("-ID:\Libraries\SFML-2.5.1\include");
+      when others =>
+        null;
+    end case;
+  end Compiler;
+
    package Linker is
-      for Linker_Options use ("-lsfml-audio");
+    case V_OS is
+      when "Windows_NT" =>
+        for Linker_Options use ("-LD:\Libraries\SFML-2.5.1\lib", "-lsfml-audio");
+      when others =>
+        for Linker_Options use ("-lsfml-audio");
+    end case;
    end Linker;
 
 end SfmlAudio;
