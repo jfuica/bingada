@@ -14,4 +14,6 @@ package Q_Sound is
   --
   procedure P_Play_Number (V_Number : Positive);
 
+  procedure P_Clean_Up;
+
 end Q_Sound;

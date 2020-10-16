@@ -1,3 +1,6 @@
 [submodule "libs/canberra-ada"]
 	path = libs/canberra-ada
 	url = https://github.com/onox/canberra-ada
+[submodule "libs/ASFML"]
+	path = libs/ASFML
+	url = https://github.com/mgrojo/ASFML

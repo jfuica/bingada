@@ -2,7 +2,7 @@
 --*
 --* PROJECT:            BingAda
 --*
---* FILE:               q_sound.sfml.adb
+--* FILE:               q_sound.asfml.adb
 --*
 --* AUTHOR:             Manuel <mgrojo at github>
 --*
@@ -10,12 +10,11 @@
 
 -- External sound library
 --
-with Snd4ada_Hpp;
+with Sf.Audio.Music;
+with Sf.Audio.Types;
 
 with Ada.Directories;
 with Ada.Strings.Fixed;
-
-with Interfaces.C.Strings;
 
 with Gtkada.Intl;
 
@@ -23,11 +22,11 @@ with Q_Bingo;
 
 package body Q_Sound is
 
-  use type Interfaces.C.int;
+  use type Sf.Audio.Types.sfMusic_Ptr;
 
-  type T_Sound_Array is array (Q_Bingo.T_Number) of Interfaces.C.Int;
+  type T_Sound_Array is array (Q_Bingo.T_Number) of Sf.Audio.Types.sfMusic_Ptr;
 
-  V_Sounds : T_Sound_Array := (others => -1);
+  V_Sounds : T_Sound_Array;
 
   --==================================================================
 
@@ -65,13 +64,12 @@ package body Q_Sound is
   procedure P_Play_Number (V_Number : Positive) is
   begin
 
-     if V_Sounds (V_Number) = -1 then
-        V_Sounds (V_Number) := snd4ada_hpp.initSnd
-         (Pc  => Interfaces.C.Strings.New_String (F_Filename (V_Number)),
-          Vol => 99);
+     if V_Sounds (V_Number) = null then
+        V_Sounds (V_Number) := Sf.Audio.Music.sfMusic_CreateFromFile
+          (F_Filename (V_Number));
      end if;
 
-    snd4ada_hpp.playSnd (V_Sounds (V_number));
+    Sf.Audio.Music.sfMusic_Play (V_Sounds (V_number));
 
   end P_Play_Number;
 
@@ -79,11 +77,15 @@ package body Q_Sound is
 
   procedure P_Clean_Up is
   begin
-     snd4ada_hpp.termSnds;
-  end P_Clean_Up;
 
-begin
+     for V_Music of V_Sounds loop
 
-   snd4ada_hpp.initSnds;
+       if V_Music /= null then
+          Sf.Audio.Music.sfMusic_Destroy (V_Music);
+       end if;
+
+    end loop;
+
+  end p_clean_up;
 
 end Q_Sound;
