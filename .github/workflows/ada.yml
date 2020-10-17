@@ -52,5 +52,5 @@ jobs:
         tag: continuous
         name: Continuous build
         prerelease: True
-        artifacts: "bingada*.AppImage"
+        artifacts: "BingAda*.AppImage"
         token: ${{ secrets.GITHUB_TOKEN }}
