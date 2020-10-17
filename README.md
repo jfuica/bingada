@@ -27,6 +27,10 @@ The Bingo is fully functional, you can:
 - Colors configurable using `bingada.css`. Two styles provided: light and dark.
 
 # Dependencies
+Clone the repository in this way so you get all the dependent submodules:
+```
+git clone --recursive https://github.com/jfuica/bingada
+```
 
 - GtkAda: independently installed
 - Sound: two alternative libraries are supported:
@@ -37,28 +41,33 @@ The Bingo is fully functional, you can:
 You can choose the sound alternative in this way:
 `gprbuild -XSOUND_LIB="sfml"`
 
-where the possible values for SOUND_LIB are "canberra", "sfml" and "none"
+where the possible values for SOUND_LIB are "canberra", "sfml", "asfml" and "none"
 (default: "canberra", which under Windows is equivalent to "none").
 
-# Sound: canberra-ada
+You may need to edit `bingada.gpr` to remove
+the sound dependency options ("with" statetements) which won't build in your system.
+
+# Sound: option "canberra"
 
 In order to build canberra-ada (only for Linux):
 
 ```
-git clone --recursive https://github.com/jfuica/bingada
 cd libs/canberra-ada
 make
 ```
 Required packages are listed in https://github.com/onox/canberra-ada
 
-# Sound: sfmlAudio
+# Sound: option "sfml"
 
-SfmlAudio is build as part of the project. Edit `bingada.gpr` to remove
-this dependency if it cannot be built.
-
-sfmlAudio works in both in Windows and Linux.
+SfmlAudio is a minimal binding to the C++ SFML Audio library and it is included as part of the project.
+sfmlAudio works in both Windows and Linux.
 
 See instructions in libs/sfmlAudio/README.md
+
+# Sound: option "asfml"
+
+This option uses the complete Ada binding to SFML provided in
+https://github.com/mgrojo/ASFML
 
 # Linux/Windows Install using GNAT Community Edition
 
@@ -69,7 +78,7 @@ See instructions in libs/sfmlAudio/README.md
 
 - You might need to adjust `bingada.gpr`, like setting the path to your `gtkada.gpr` file or removing the line importing the canberra-ada project, since it is not supported in Windows (see issue #11).
 
-- You can open the gtkada.gpr file using GPS, or compile with gprbuild -p bingada
+- You can open the `gtkada.gpr` file using GPS, or compile with `gprbuild -p bingada`
 
 - You need to copy GtkAda DLL files to your execution directory to run bingada.
 
