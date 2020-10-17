@@ -23,19 +23,19 @@ jobs:
         sudo apt-get update &&
         sudo apt-get install gnat-7 gprbuild make libcanberra-dev libgtkada16.1.0-dev libsfml-dev libcsfml-dev libglu1-mesa-dev
 
-    - name: Build (audio: none)
+    - name: Build with none audio
       run: >
         gprbuild -j0 -p -XSOUND_LIB=none
 
-    - name: Build (audio: sfml)
+    - name: Build with sfml audio
       run: >
         gprbuild -j0 -p -XSOUND_LIB=sfml
 
-    - name: Build (audio: asfml)
+    - name: Build with asfml audio
       run: >
         gprbuild -j0 -p -XSOUND_LIB=asfml
 
-    - name: Build (audio: canberra)
+    - name: Build with canberra audio
       run: >
         cd libs/canberra-ada &&
         make &&
