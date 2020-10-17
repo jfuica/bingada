@@ -44,6 +44,7 @@ with Q_Bingo.Q_Bombo;
 with Q_Bingo_Help;
 with Q_Csv.Q_Read_File;
 with Q_Bingo.Q_Gtk.Q_Intl;
+with Q_Sound;
 
 package body Q_Bingada is
 
@@ -122,6 +123,8 @@ package body Q_Bingada is
     pragma Unreferenced (Self);
 
   begin
+
+    Q_Sound.P_Clean_Up;
 
     Text_Io.Put_Line (-"exit_message");
 

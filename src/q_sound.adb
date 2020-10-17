@@ -62,4 +62,8 @@ package body Q_Sound is
 
   --==================================================================
 
+  -- Nothing to do in the canberra version
+  --
+  procedure P_Clean_Up is null;
+
 end Q_Sound;

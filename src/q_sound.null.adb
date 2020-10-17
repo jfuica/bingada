@@ -2,7 +2,7 @@
 --*
 --* PROJECT:            BINGADA
 --*
---* FILE:               q_sound.adb
+--* FILE:               q_sound.null.adb
 --*
 --* AUTHOR:             Manuel <mgrojo at github>
 --*
@@ -12,8 +12,10 @@ package body Q_Sound is
 
   --==================================================================
 
-  -- For systems where sound is not currently supported.
-  --
+  -- Implementation for systems where sound is not currently supported.
+
   procedure P_Play_Number (V_Number : Positive) is null;
+
+  procedure P_Clean_Up is null;
 
 end Q_Sound;
