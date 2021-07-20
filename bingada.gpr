@@ -20,7 +20,7 @@ project Bingada is
   V_OS : T_OS := external ("OS", "Linux");
 
   type T_Sound_Lib is ("canberra", "sfml", "asfml", "none");
-  V_Sound_Lib : T_Sound_Lib := external ("SOUND_LIB", "canberra");
+  V_Sound_Lib : T_Sound_Lib := external ("SOUND_LIB", "asfml");
 
   for Source_Dirs use ("src");
   for Object_Dir use "obj";
@@ -41,11 +41,11 @@ project Bingada is
       when "Linux" =>
         case V_Sound_Lib is
           when "canberra" =>
-            for body("Q_Sound") use "q_sound.adb";
+            for body("Q_Sound") use "q_sound.canberra.adb";
           when "sfml" =>
             for body("Q_Sound") use "q_sound.sfml.adb";
           when "asfml" =>
-            for Body("Q_Sound") use "q_sound.asfml.adb";
+            for Body("Q_Sound") use "q_sound.adb";
           when "none" =>
             for body("Q_Sound") use "q_sound.null.adb";
         end case;

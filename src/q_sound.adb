@@ -1,8 +1,8 @@
 --*****************************************************************************
 --*
---* PROJECT:            BINGADA
+--* PROJECT:            BingAda
 --*
---* FILE:               q_sound.adb
+--* FILE:               q_sound.asfml.adb
 --*
 --* AUTHOR:             Manuel <mgrojo at github>
 --*
@@ -10,23 +10,27 @@
 
 -- External sound library
 --
-with Canberra;
+with Sf.Audio.Music;
+with Sf.Audio.Types;
 
 with Ada.Directories;
 with Ada.Strings.Fixed;
 
 with Gtkada.Intl;
 
+with Q_Bingo;
+
 package body Q_Sound is
 
-  V_Context : Canberra.Context := Canberra.Create
-    (Name => "BingAda",
-     Id   => "bingada.lovelace",
-     Icon => "applications-games");
+  use type Sf.Audio.Types.sfMusic_Ptr;
+
+  type T_Sound_Array is array (Q_Bingo.T_Number) of Sf.Audio.Types.sfMusic_Ptr;
+
+  V_Sounds : T_Sound_Array;
 
   --==================================================================
 
-  procedure P_Play_Number (V_Number : Positive) is
+  function F_Filename (V_Number : Positive) return String is
 
     C_Number_Image   : constant String := Ada.Strings.Fixed.Trim
       (V_Number'Image, Ada.Strings.Left);
@@ -37,7 +41,6 @@ package body Q_Sound is
     C_Default_Lang   : constant String := "en";
 
     V_Lang : String (1 .. C_Lang_Code_Last) := C_Default_Lang;
-    V_Sound : Canberra.Sound;
   begin
 
     if C_Locale'Length >= C_Lang_Code_Last then
@@ -52,18 +55,37 @@ package body Q_Sound is
       V_Lang := C_Default_Lang;
     end if;
 
-    V_Context.Play_File
-      (File_Name  => C_Path & V_Lang & '/' & C_Number_Image & C_Extension,
-       File_Sound => V_Sound,
-       Kind       => Canberra.Music,
-       Name       => "Number");
+    return C_Path & V_Lang & '/' & C_Number_Image & C_Extension;
+
+  end F_Filename;
+
+  --==================================================================
+
+  procedure P_Play_Number (V_Number : Positive) is
+  begin
+
+     if V_Sounds (V_Number) = null then
+        V_Sounds (V_Number) := Sf.Audio.Music.sfMusic_CreateFromFile
+          (F_Filename (V_Number));
+     end if;
+
+    Sf.Audio.Music.sfMusic_Play (V_Sounds (V_number));
 
   end P_Play_Number;
 
   --==================================================================
 
-  -- Nothing to do in the canberra version
-  --
-  procedure P_Clean_Up is null;
+  procedure P_Clean_Up is
+  begin
+
+     for V_Music of V_Sounds loop
+
+       if V_Music /= null then
+          Sf.Audio.Music.sfMusic_Destroy (V_Music);
+       end if;
+
+    end loop;
+
+  end p_clean_up;
 
 end Q_Sound;
