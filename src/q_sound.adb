@@ -11,7 +11,6 @@
 -- External sound library
 --
 with Sf.Audio.Music;
-with Sf.Audio.Types;
 
 with Ada.Directories;
 with Ada.Strings.Fixed;
@@ -22,9 +21,9 @@ with Q_Bingo;
 
 package body Q_Sound is
 
-  use type Sf.Audio.Types.sfMusic_Ptr;
+  use type Sf.Audio.sfMusic_Ptr;
 
-  type T_Sound_Array is array (Q_Bingo.T_Number) of Sf.Audio.Types.sfMusic_Ptr;
+  type T_Sound_Array is array (Q_Bingo.T_Number) of Sf.Audio.sfMusic_Ptr;
 
   V_Sounds : T_Sound_Array;
 
@@ -65,11 +64,11 @@ package body Q_Sound is
   begin
 
      if V_Sounds (V_Number) = null then
-        V_Sounds (V_Number) := Sf.Audio.Music.sfMusic_CreateFromFile
+        V_Sounds (V_Number) := Sf.Audio.Music.createFromFile
           (F_Filename (V_Number));
      end if;
 
-    Sf.Audio.Music.sfMusic_Play (V_Sounds (V_number));
+    Sf.Audio.Music.play (V_Sounds (V_number));
 
   end P_Play_Number;
 
@@ -81,7 +80,7 @@ package body Q_Sound is
      for V_Music of V_Sounds loop
 
        if V_Music /= null then
-          Sf.Audio.Music.sfMusic_Destroy (V_Music);
+          Sf.Audio.Music.destroy (V_Music);
        end if;
 
     end loop;
