@@ -26,30 +26,41 @@ The Bingo is fully functional, you can:
 
 - Colors configurable using `bingada.css`. Two styles provided: light and dark.
 
-# Dependencies
+# Building with Alire
+
+- Install [Alire](https://alire.ada.dev/)
+- Build using `alr build`. All the dependencies are installed and managed by Alire.
+- Run directly from `bin/bingada`
+
+The library used for sound in this case is [ASFML](https://github.com/mgrojo/ASFML) available under Linux and Windows.
+
+# Building without Alire
 Clone the repository in this way so you get all the dependent submodules:
 ```
 git clone --recursive https://github.com/jfuica/bingada
 ```
 
 - GtkAda: independently installed
-- Sound: two alternative libraries are supported:
-    - canberra-ada: used as a git submodule
-    - sfmlAudio: copied into this repository from
-      [RufasSock](https://github.com/fastrgv/RufasSok)
+- Sound: three alternative libraries are supported.
 
 You can choose the sound alternative in this way:
-`gprbuild -XSOUND_LIB="sfml"`
+`gprbuild -XSOUND_LIB="sfml" -P gtkada_custom.gpr`
 
-where the possible values for SOUND_LIB are "canberra", "sfml", "asfml" and "none"
-(default: "canberra", which under Windows is equivalent to "none").
+where the possible values for SOUND_LIB are "asfml" (default), "canberra", "sfml" and "none".
 
 You may need to edit `bingada.gpr` to remove
 the sound dependency options ("with" statetements) which won't build in your system.
 
-# Sound: option "canberra"
+## Sound: option "asfml"
 
-In order to build canberra-ada (only for Linux):
+This option uses the complete Ada binding to SFML provided in
+https://github.com/mgrojo/ASFML
+
+asfml can be used as a git submodule.
+
+## Sound: option "canberra"
+
+canberra_ada can be used as a git submodule. In order to build it (only for Linux):
 
 ```
 cd libs/canberra-ada
@@ -59,42 +70,44 @@ Required packages are listed in https://github.com/onox/canberra-ada
 
 # Sound: option "sfml"
 
-SfmlAudio is a minimal binding to the C++ SFML Audio library and it is included as part of the project.
+SfmlAudio is a minimal binding to the C++ SFML Audio library and it is
+included as part of the project (copied into this repository from
+[RufasSock](https://github.com/fastrgv/RufasSok))
+
 sfmlAudio works in both Windows and Linux.
 
 See instructions in libs/sfmlAudio/README.md
 
-# Sound: option "asfml"
-
-This option uses the complete Ada binding to SFML provided in
-https://github.com/mgrojo/ASFML
-
-# Linux/Windows Install using GNAT Community Edition
+## Linux/Windows Install using GNAT Community Edition
 
 - Install the GNAT Community Edition for your Operating System version.
 
 - Install GtkAda Community Edition and set the default path where you installed
   the gnat.
 
-- You might need to adjust `bingada.gpr`, like setting the path to your `gtkada.gpr` file or removing the line importing the canberra-ada project, since it is not supported in Windows (see issue #11).
+- You might need to adjust `bingada_custom.gpr`, like setting the path to your `gtkada.gpr` file or removing the line importing the canberra-ada project, since it is not supported in Windows (see issue #11).
 
-- You can open the `gtkada.gpr` file using GPS, or compile with `gprbuild -p bingada`
+- You can open the `gtkada_custom.gpr` file using GPS, or compile with `gprbuild -p bingada`
 
 - You need to copy GtkAda DLL files to your execution directory to run bingada.
 
-# Installation under Ubuntu 16.04 using FSF GNAT
+# Installation under Ubuntu using FSF GNAT
 
-- Install the following packages:
+- Install the following packages (Ubuntu 16.04):
 ```
 sudo apt install gprbuild gnat libgtkada16.1.0-dev
 ```
+- Install the following packages (Ubuntu 20.04):
+```
+sudo apt install gprbuild gnat libgtkada19-dev
+```
 - Build with:
 ```
-gprbuild -p bingada
+gprbuild -p -P bingada_custom
 ```
 - Run directly like this:
 ```
-./obj/bingada
+./bin/bingada
 ```
 - Or you can install using `make install DESTDIR=destination` and run from there.
 
@@ -109,7 +122,7 @@ The interface is really simple, and it could be improved, but, I think the main 
 
 - Include status message (Stop/start..)
 
-- Configure Other options.
+- Configure other options.
 
 # Attribution
 

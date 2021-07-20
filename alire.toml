@@ -1,0 +1,16 @@
+name = "bingada"
+description = "Bingo application in GTKAda"
+version = "0.9.0"
+
+authors = ["Javier Fuica Fernández", "Manuel Gomez"]
+maintainers = ["Manuel Gomez <mgrojo@gmail.com>"]
+maintainers-logins = ["mgrojo"]
+
+executables = ["bingada"]
+
+[[depends-on]]  # This line was added by `alr with`
+gtkada = "^21.0.0"  # This line was added by `alr with`
+
+
+[[depends-on]]  # This line was added by `alr with`
+asfml = "^2.5.0"  # This line was added by `alr with`

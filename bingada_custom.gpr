@@ -1,0 +1,74 @@
+-- This is the project file to use when you don't have Alire.
+-- It uses git submodules, so you have to clone using the recurse option:
+-- git clone --recursive https://github.com/jfuica/bingada
+
+-- Add path to your gtkada installation if it is not found by gprbuild, e.g.:
+--with "/opt/COTS/gtkada-2019/lib/gnat/gtkada";
+with "gtkada.gpr";
+
+-- Delete this line under Windows, since canberra is not supported and won't
+-- link.
+with "libs/canberra-ada/tools/canberra.gpr";
+
+-- Delete this line if sfmlAudio does not build and choose another option
+-- for SOUND_LIB.
+with "libs/sfmlAudio/sfmlAudio.gpr";
+
+-- Delete this line if ASFML does not build and choose another option
+-- for SOUND_LIB.
+with "libs/ASFML/asfml.gpr";
+
+project Bingada is
+
+  type T_OS is ("Windows_NT", "Linux");
+  V_OS : T_OS := external ("OS", "Linux");
+
+  type T_Sound_Lib is ("canberra", "sfml", "asfml", "none");
+  V_Sound_Lib : T_Sound_Lib := external ("SOUND_LIB", "asfml");
+
+  for Source_Dirs use ("src");
+  for Object_Dir use "obj";
+  for Exec_Dir use "bin";
+  for Main use ("bingada.adb");
+
+  package Naming is
+    case V_OS is
+      when "Windows_NT" =>
+        case V_Sound_Lib is
+          when "sfml" =>
+            for body("Q_Sound") use "q_sound.sfml.adb";
+          when "asfml" =>
+            for Body("Q_Sound") use "q_sound.adb";
+          when others =>
+            -- canberra not supported
+            for body("Q_Sound") use "q_sound.null.adb";
+        end case;
+      when "Linux" =>
+        case V_Sound_Lib is
+          when "canberra" =>
+            for body("Q_Sound") use "q_sound.canberra.adb";
+          when "sfml" =>
+            for body("Q_Sound") use "q_sound.sfml.adb";
+          when "asfml" =>
+            for Body("Q_Sound") use "q_sound.adb";
+          when "none" =>
+            for body("Q_Sound") use "q_sound.null.adb";
+        end case;
+      when others =>
+        for body("Q_Sound") use "q_sound.null.adb";
+    end case;
+  end Naming;
+
+  package Compiler is
+    for Default_Switches ("ada") use
+       ("-g",
+        "-gnatwa",
+        "-fstack-check",
+        "-gnatVa",
+        "-gnatU",
+        "-gnatf",
+        "-gnateE");
+
+  end Compiler;
+
+end Bingada;

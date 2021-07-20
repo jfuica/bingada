@@ -6,3 +6,6 @@ adalib
 .#*
 *.ali
 *.a
+obj/
+bin/
+alire/

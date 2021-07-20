@@ -1,69 +1,89 @@
--- Add path to your gtkada installation if it is not found by gprbuild, e.g.:
---with "/opt/COTS/gtkada-2019/lib/gnat/gtkada";
+-- begin auto-gpr-with --
+--  This section was automatically added by Alire
+with "asfml.gpr";
 with "gtkada.gpr";
+-- end auto-gpr-with --
 
--- Delete this line under Windows, since canberra is not supported and won't
--- link.
-with "libs/canberra-ada/tools/canberra.gpr";
-
--- Delete this line if sfmlAudio does not build and choose another option
--- for SOUND_LIB.
-with "libs/sfmlAudio/sfmlAudio.gpr";
-
--- Delete this line if ASFML does not build and choose another option
--- for SOUND_LIB.
-with "libs/ASFML/asfml.gpr";
+--This is the project to be used with Alire.
+-- Build with:
+--  alr build
 
 project Bingada is
 
-  type T_OS is ("Windows_NT", "Linux");
-  V_OS : T_OS := external ("OS", "Linux");
+   for Source_Dirs use ("src");
+   for Object_Dir use "obj";
+   for Create_Missing_Dirs use "True";
+   for Exec_Dir use "bin";
+   for Main use ("bingada.adb");
 
-  type T_Sound_Lib is ("canberra", "sfml", "asfml", "none");
-  V_Sound_Lib : T_Sound_Lib := external ("SOUND_LIB", "asfml");
+   type Enabled_Kind is ("enabled", "disabled");
+   Compile_Checks : Enabled_Kind := External ("BINGADA_COMPILE_CHECKS", "enabled");
+   Runtime_Checks : Enabled_Kind := External ("BINGADA_RUNTIME_CHECKS", "enabled");
+   Style_Checks : Enabled_Kind := External ("BINGADA_STYLE_CHECKS", "enabled");
+   Contracts_Checks : Enabled_Kind := External ("BINGADA_CONTRACTS", "enabled");
 
-  for Source_Dirs use ("src");
-  for Object_Dir use "obj";
-  for Main use ("bingada.adb");
+   type Build_Kind is ("debug", "optimize");
+   Build_Mode : Build_Kind := External ("BINGADA_BUILD_MODE", "debug");
 
-  package Naming is
-    case V_OS is
-      when "Windows_NT" =>
-        case V_Sound_Lib is
-          when "sfml" =>
-            for body("Q_Sound") use "q_sound.sfml.adb";
-          when "asfml" =>
-            for Body("Q_Sound") use "q_sound.asfml.adb";
-          when others =>
-            -- canberra not supported
-            for body("Q_Sound") use "q_sound.null.adb";
-        end case;
-      when "Linux" =>
-        case V_Sound_Lib is
-          when "canberra" =>
-            for body("Q_Sound") use "q_sound.canberra.adb";
-          when "sfml" =>
-            for body("Q_Sound") use "q_sound.sfml.adb";
-          when "asfml" =>
-            for Body("Q_Sound") use "q_sound.adb";
-          when "none" =>
-            for body("Q_Sound") use "q_sound.null.adb";
-        end case;
+   Compile_Checks_Switches := ();
+   case Compile_Checks is
+      when "enabled" =>
+         Compile_Checks_Switches :=
+           ("-gnatwa",  -- All warnings
+            "-gnatVa");  -- All validity checks
+            -- "-gnatwe"); -- Warnings as errors
+      when others => null;
+   end case;
+
+   Runtime_Checks_Switches := ();
+   case Runtime_Checks is
+      when "enabled" => null;
       when others =>
-        for body("Q_Sound") use "q_sound.null.adb";
-    end case;
-  end Naming;
+         Runtime_Checks_Switches :=
+           ("-gnatp"); -- Supress checks
+   end case;
 
-  package Compiler is
-    for Default_Switches ("ada") use
-       ("-g",
-        "-gnatwa",
-        "-fstack-check",
-        "-gnatVa",
-        "-gnatU",
-        "-gnatf",
-        "-gnateE");
+   Style_Checks_Switches := ();
+   case Style_Checks is
+      when "enabled" =>
+         Style_Checks_Switches :=
+           ("-gnatyg",   -- GNAT Style checks
+            "-gnaty-d",  -- Disable no DOS line terminators
+            "-gnatyM80", -- Maximum line length
+            "-gnatyO");  -- Overriding subprograms explicitly marked as such
+      when others => null;
+   end case;
 
-  end Compiler;
+   Contracts_Switches := ();
+   case Contracts_Checks is
+      when "enabled" =>
+         Contracts_Switches :=
+           ("-gnata"); --  Enable assertions and contracts
+      when others => null;
+   end case;
+
+   Build_Switches := ();
+   case Build_Mode is
+      when "optimize" =>
+         Build_Switches := ("-O3",     -- Optimization
+                            "-gnatn"); -- Enable inlining
+      when "debug" =>
+         Build_Switches := ("-g",   -- Debug info
+                            "-Og"); -- No optimization
+   end case;
+
+   package Compiler is
+      for Default_Switches ("Ada") use
+        Compile_Checks_Switches &
+        Build_Switches &
+        Runtime_Checks_Switches &
+        Contracts_Switches &
+        ("-gnatw.X", -- Disable warnings for No_Exception_Propagation
+         "-gnatQ");  -- Don't quit. Generate ALI and tree files even if illegalities
+   end Compiler;
+
+   package Binder is
+      for Switches ("Ada") use ("-Es"); --  Symbolic traceback
+   end Binder;
 
 end Bingada;

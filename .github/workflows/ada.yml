@@ -21,26 +21,26 @@ jobs:
     - name: Set up GNAT toolchain and libraries
       run: >
         sudo apt-get update &&
-        sudo apt-get install gnat gprbuild make libcanberra-dev libgtkada19-dev libsfml-dev libcsfml-dev libglu1-mesa-dev
+        sudo apt-get install gnat gprbuild make libcanberra-dev libgtkada19-dev libsfml-dev libcsfml-dev
 
     - name: Build with none audio
       run: >
-        gprbuild -j0 -p -XSOUND_LIB=none
+        gprbuild -j0 -p -XSOUND_LIB=none -P bingada_custom.gpr
 
     - name: Build with sfml audio
       run: >
-        gprbuild -j0 -p -XSOUND_LIB=sfml
-
-    - name: Build with asfml audio
-      run: >
-        gprbuild -j0 -p -XSOUND_LIB=asfml
+        gprbuild -j0 -p -XSOUND_LIB=sfml -P bingada_custom.gpr
 
     - name: Build with canberra audio
       run: >
         cd libs/canberra-ada &&
         make &&
         cd ../.. &&
-        gprbuild -j0 -p
+        gprbuild -j0 -p -XSOUND_LIB=canberra -P bingada_custom.gpr
+
+    - name: Build with asfml audio
+      run: >
+        gprbuild -j0 -p -XSOUND_LIB=asfml -P bingada_custom.gpr
 
     - name: Build AppImage
       run: make AppImage
