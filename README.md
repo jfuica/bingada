@@ -44,7 +44,7 @@ git clone --recursive https://github.com/jfuica/bingada
 - Sound: three alternative libraries are supported.
 
 You can choose the sound alternative in this way:
-`gprbuild -XSOUND_LIB="sfml" -P gtkada_custom.gpr`
+`gprbuild -XSOUND_LIB="sfml" -P bingada_custom.gpr`
 
 where the possible values for SOUND_LIB are "asfml" (default), "canberra", "sfml" and "none".
 
@@ -87,7 +87,7 @@ See instructions in libs/sfmlAudio/README.md
 
 - You might need to adjust `bingada_custom.gpr`, like setting the path to your `gtkada.gpr` file or removing the line importing the canberra-ada project, since it is not supported in Windows (see issue #11).
 
-- You can open the `gtkada_custom.gpr` file using GPS, or compile with `gprbuild -p bingada`
+- You can open the `bingada_custom.gpr` file using GPS, or compile with `gprbuild -p bingada`
 
 - You need to copy GtkAda DLL files to your execution directory to run bingada.
 
