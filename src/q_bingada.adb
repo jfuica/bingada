@@ -1069,6 +1069,8 @@ package body Q_Bingada is
     --
     P_Init_Bingo;
 
+    Q_Sound.P_Initialize;
+
     V_Main_Window.On_Destroy (P_Main_Quit'Access);
 
     V_Main_Window.Maximize;

@@ -25,6 +25,8 @@ package body Q_Sound is
      Icon => "applications-games");
 
   --==================================================================
+  procedure P_Initialize is null;
+  --==================================================================
 
   procedure P_Play_Number (V_Number : Positive) is
 

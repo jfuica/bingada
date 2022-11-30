@@ -10,6 +10,8 @@
 
 package Q_Sound is
 
+  procedure P_Initialize;
+
   -- Play the Number according to the current language.
   --
   procedure P_Play_Number (V_Number : Positive);

@@ -60,13 +60,25 @@ package body Q_Sound is
 
   --==================================================================
 
+  procedure P_Initialize is
+  begin
+
+    for V_Number in V_Sounds'Range loop
+
+      V_Sounds (V_Number) := Sf.Audio.Music.createFromFile
+        (F_Filename (V_Number));
+
+    end loop;
+
+  end P_Initialize;
+
+  --==================================================================
+
   procedure P_Play_Number (V_Number : Positive) is
   begin
 
-     if V_Sounds (V_Number) = null then
-        V_Sounds (V_Number) := Sf.Audio.Music.createFromFile
-          (F_Filename (V_Number));
-     end if;
+    -- Stop and rewind (if already played)
+    Sf.Audio.Music.stop (V_Sounds (V_number));
 
     Sf.Audio.Music.play (V_Sounds (V_number));
 
@@ -77,14 +89,14 @@ package body Q_Sound is
   procedure P_Clean_Up is
   begin
 
-     for V_Music of V_Sounds loop
+    for V_Sound of V_Sounds loop
 
-       if V_Music /= null then
-          Sf.Audio.Music.destroy (V_Music);
-       end if;
+      if V_Sound /= null then
+        Sf.Audio.Music.destroy (V_Sound);
+      end if;
 
     end loop;
 
-  end p_clean_up;
+  end P_Clean_Up;
 
 end Q_Sound;

@@ -62,14 +62,24 @@ package body Q_Sound is
 
   --==================================================================
 
-  procedure P_Play_Number (V_Number : Positive) is
+  procedure P_Initialize is
   begin
 
-     if V_Sounds (V_Number) = -1 then
-        V_Sounds (V_Number) := snd4ada_hpp.initSnd
-         (Pc  => Interfaces.C.Strings.New_String (F_Filename (V_Number)),
-          Vol => 99);
-     end if;
+    snd4ada_hpp.initSnds;
+
+    for V_Number in V_Sounds'Range loop
+
+      V_Sounds (V_Number) := snd4ada_hpp.initSnd
+        (Pc  => Interfaces.C.Strings.New_String (F_Filename (V_Number)),
+         Vol => 99);
+    end loop;
+
+  end P_Initialize;
+
+  --==================================================================
+
+  procedure P_Play_Number (V_Number : Positive) is
+  begin
 
     snd4ada_hpp.playSnd (V_Sounds (V_number));
 
@@ -81,9 +91,5 @@ package body Q_Sound is
   begin
      snd4ada_hpp.termSnds;
   end P_Clean_Up;
-
-begin
-
-   snd4ada_hpp.initSnds;
 
 end Q_Sound;
