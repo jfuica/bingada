@@ -35,32 +35,41 @@ package body Q_Bingo_Help is
        (About        => V_Dialog,
         Section_Name => "Beta Testers : ",
         People       =>
-           (1 => new String'("Wife"),
-            2 => new String'("Sons")));
+           (1 => new String'("Javier's Wife"),
+            2 => new String'("Javier's Sons")));
 
     Gtk.About_Dialog.Set_Authors
        (V_Dialog,
-        (1 => new String'("Javier Fuica Fernandez <jafuica@gmail.com>")));
+        (1 => new String'("Javier Fuica Fernandez <jafuica@gmail.com>"),
+         2 => new String'("Manuel Gomez <mgrojo@gmail.com>")));
 
     Gtk.About_Dialog.Set_Comments (V_Dialog, "Bingo application in GTKAda");
 
     Gtk.About_Dialog.Set_License
-       (V_Dialog,
-        "This library is free software; you can redistribute it and/or"
-           & " modify it under the terms of the GNU General Public"
-           & " License as published by the Free Software Foundation; either"
-           & " version 2 of the License, or (at your option) any later version."
-           & Ascii.Lf
-           & "This library is distributed in the hope that it will be useful,"
-           & " but WITHOUT ANY WARRANTY; without even the implied warranty of"
-           & " MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the"
-           & " GNU General Public License for more details.");
+      (V_Dialog,
+       "Permission is hereby granted, free of charge, to any person obtaining a copy "
+         & "of this software and associated documentation files (the ""Software""), to deal "
+         & "in the Software without restriction, including without limitation the rights "
+         & "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell "
+         & "copies of the Software, and to permit persons to whom the Software is "
+         & "furnished to do so, subject to the following conditions: "
+         & ASCII.LF & ASCII.LF
+         & "The above copyright notice and this permission notice shall be included in all "
+         & "copies or substantial portions of the Software. "
+         & ASCII.LF & ASCII.LF
+         & "THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR "
+         & "IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, "
+         & "FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE "
+         & "AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER "
+         & "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, "
+         & "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE "
+         & "SOFTWARE");
 
     Gtk.About_Dialog.Set_Wrap_License (V_Dialog, True);
 
     Gtk.About_Dialog.Set_Program_Name (V_Dialog, "BingAda");
 
-    Gtk.About_Dialog.Set_Version (V_Dialog, "0.9 Beta");
+    Gtk.About_Dialog.Set_Version (V_Dialog, "1.0");
 
     if Gtk.About_Dialog.Run (V_Dialog) /= Gtk.Dialog.Gtk_Response_Close then
       --  Dialog was destroyed by user, not closed through Close button
@@ -69,9 +78,6 @@ package body Q_Bingo_Help is
 
     Gtk.About_Dialog.Destroy (V_Dialog);
 
-     --GTK.ABOUT_DIALOG.ON_ACTIVATE_LINK (V_DIALOG,P_ON_ACTIVATE_LINK'Access);
-
-    --GTK.ABOUT_DIALOG.DESTROY (V_DIALOG);
 
   end P_Show_Window;
 
