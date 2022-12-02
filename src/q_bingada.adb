@@ -12,7 +12,6 @@
 with Text_Io;
 
 with Ada.Strings.Fixed;
-with Ada.Containers;
 
 
 with Glib.Main;
@@ -50,7 +49,6 @@ package body Q_Bingada is
 
   use type Glib.Main.G_Source_Id;
   use type Glib.Guint;
-  use type Gdk.Types.Gdk_Key_Type;
 
   --==================================================================
 
@@ -60,7 +58,7 @@ package body Q_Bingada is
 
   C_Drum_Spin_File : constant String := "drum_spin.png";
 
-  V_First_Bombo : Positive := 1;
+  V_Drum_Is_Spun : Boolean := True;
 
   V_Dark_Style : Boolean := False;
 
@@ -100,19 +98,9 @@ package body Q_Bingada is
 
   begin
 
-    if V_First_Bombo = 1 then
+    V_Drum_Is_Spun := not V_Drum_Is_Spun;
 
-      V_First_Bombo := 2;
-
-      return C_Bombo_File;
-
-    else
-
-      V_First_Bombo := 1;
-
-      return C_Drum_Spin_File;
-
-    end if;
+    return (if V_Drum_Is_Spun then C_Bombo_File else C_Drum_Spin_File);
 
   end F_Swap_Bombo_Image;
 
@@ -152,19 +140,15 @@ package body Q_Bingada is
 
   function F_Get_Number (V_Index : Positive) return String is
 
+    V_Image : String := "  ";
   begin
 
-    if V_Index < 10 then
+    Ada.Strings.Fixed.Move
+      (Source => V_Index'Image,
+       Target => V_Image,
+       Drop   => Ada.Strings.Left);
 
-      return " " & Ada.Strings.Fixed.Trim (Source => V_Index'Image,
-                                           Side   => Ada.Strings.Both);
-
-    else
-
-      return Ada.Strings.Fixed.Trim (Source => V_Index'Image,
-                                     Side   => Ada.Strings.Both);
-
-    end if;
+    return V_Image;
 
   end F_Get_Number;
 
@@ -185,12 +169,6 @@ package body Q_Bingada is
     V_Current_Number.Set_Label (F_Get_Number (C_Number));
 
     if V_Current_Index > 1 then
-
-      -- GTK.LABEL.SET_MARKUP
-      --    (GTK.LABEL.GTK_LABEL (GTK.BUTTON.GET_CHILD (V_PREVIOUS_NUMBER_1)),
-      --     "<span face=""Sans Italic"" color=""red"" size=""large"" >" &
-      --        F_GET_NUMBER
-      --        (Q_BINGO.Q_BOMBO.F_GET_NUMBER (V_CURRENT_INDEX - 1)) & "</span>");
 
       V_Previous_Number_1.Set_Label
          (F_Get_Number
@@ -448,11 +426,6 @@ package body Q_Bingada is
        Gdk.Event.Get_Key_Val (V_Event);
 
   begin
-
-    --TEXT_IO.PUT_LINE
-    --   ("button pressed : " & GLIB.GUINT'IMAGE
-    --       (GDK.EVENT.GET_BUTTON (V_EVENT)) & " key val " &
-    --       GDK.TYPES.GDK_KEY_TYPE'IMAGE (GDK.EVENT.GET_KEY_VAL (V_EVENT)));
 
     case C_Key_Val is
        when Gdk.Types.Keysyms.Gdk_Lc_S |
@@ -758,23 +731,6 @@ package body Q_Bingada is
 
   --==================================================================
 
-  procedure P_Show_Cards (V_Cards : Q_Csv.Q_Read_File.Q_Bingo_Cards.Vector) is
-
-  begin
-
-    Text_Io.Put_Line ("Number of Elements : " &
-                         Ada.Containers.Count_Type'Image (V_Cards.Length));
-
-    for E of V_Cards loop
-
-      Text_Io.Put_Line ("- " & E.R_Name);
-
-    end loop;
-
-  end P_Show_Cards;
-
-  --==================================================================
-
   procedure P_Read_Cards_From_File is
 
   begin
@@ -786,8 +742,6 @@ package body Q_Bingada is
         V_Cards     => V_Cards);
 
     P_Check_Bingo (V_Cards);
-
-    --P_SHOW_CARDS (V_CARDS);
 
   end P_Read_Cards_From_File;
 

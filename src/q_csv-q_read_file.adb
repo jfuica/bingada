@@ -25,8 +25,6 @@ package body Q_Csv.Q_Read_File is
 
     V_Row : T_Row := F_Line (Text_Io.Get_Line (V_File));
 
-    V_First_Col : Boolean;
-
     V_Numbers : T_Numbers;
 
     V_Index : Positive := 1;
@@ -35,20 +33,25 @@ package body Q_Csv.Q_Read_File is
 
   begin
 
-    V_First_Col := V_Row.F_Next;
+    if not V_Row.F_Next then
 
-    V_Card_Name := V_Row.F_Item (T_Name'Range);
+      Text_Io.Put_Line
+        ("Incorrect card format!");
+    else
 
-    while V_Row.F_Next loop
+      V_Card_Name := V_Row.F_Item (T_Name'Range);
 
-      V_Numbers (V_Index) := Q_Bingo.T_Number'Value (V_Row.F_Item);
+      while V_Row.F_Next loop
 
-      V_Index := V_Index + 1;
+        V_Numbers (V_Index) := Q_Bingo.T_Number'Value (V_Row.F_Item);
 
-    end loop;
+        V_Index := V_Index + 1;
 
-    V_Cards.Append ((R_Name    => V_Card_Name,
-                     R_Numbers => V_Numbers));
+      end loop;
+
+      V_Cards.Append ((R_Name    => V_Card_Name,
+                       R_Numbers => V_Numbers));
+    end if;
 
   end P_Read_Cards_In_Vector;
 
