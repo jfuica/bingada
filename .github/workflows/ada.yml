@@ -20,7 +20,7 @@ jobs:
     - name: Set up GNAT toolchain and libraries
       run: >
         sudo apt-get update &&
-        sudo apt-get install gnat gprbuild make libcanberra-dev libgtkada19-dev libsfml-dev libcsfml-dev
+        sudo apt-get install gnat gprbuild make libcanberra-dev libgtkada20-dev libsfml-dev libcsfml-dev
 
     - name: Build with none audio
       run: >
