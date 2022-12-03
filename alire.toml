@@ -1,9 +1,9 @@
 name = "bingada"
 description = "Bingo application in GTKAda"
-version = "0.9.0"
+version = "1.0.0"
 
-authors = ["Javier Fuica Fernández", "Manuel Gomez"]
-maintainers = ["Manuel Gomez <mgrojo@gmail.com>"]
+authors = ["Javier Fuica Fernández", "Manuel Gómez"]
+maintainers = ["Manuel Gómez <mgrojo@gmail.com>"]
 maintainers-logins = ["mgrojo"]
 
 executables = ["bingada"]
