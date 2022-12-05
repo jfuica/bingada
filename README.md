@@ -1,4 +1,6 @@
 ![Ada (GNAT)](https://github.com/jfuica/bingada/workflows/Ada%20(GNAT)/badge.svg)
+[![Alire](https://img.shields.io/endpoint?url=https://alire.ada.dev/badges/bingada.json)](https://alire.ada.dev/crates/bingada.html)
+
 ![BingAda](https://raw.githubusercontent.com/jfuica/bingada/master/bombo.png "BingAda icon")
 
 # bingada
@@ -48,7 +50,7 @@ You can choose the sound alternative in this way:
 
 where the possible values for SOUND_LIB are "asfml" (default), "canberra", "sfml" and "none".
 
-You may need to edit `bingada.gpr` to remove
+You may need to edit `bingada_custom.gpr` to remove
 the sound dependency options ("with" statetements) which won't build in your system.
 
 ## Sound: option "asfml"
@@ -56,7 +58,7 @@ the sound dependency options ("with" statetements) which won't build in your sys
 This option uses the complete Ada binding to SFML provided in
 https://github.com/mgrojo/ASFML
 
-asfml can be used as a git submodule.
+`asfml` can be used as a git submodule.
 
 ## Sound: option "canberra"
 
@@ -83,13 +85,13 @@ See instructions in libs/sfmlAudio/README.md
 - Install the GNAT Community Edition for your Operating System version.
 
 - Install GtkAda Community Edition and set the default path where you installed
-  the gnat.
+  GNAT.
 
 - You might need to adjust `bingada_custom.gpr`, like setting the path to your `gtkada.gpr` file or removing the line importing the canberra-ada project, since it is not supported in Windows (see issue #11).
 
-- You can open the `bingada_custom.gpr` file using GPS, or compile with `gprbuild -p bingada`
+- You can open the `bingada_custom.gpr` file using GPS, or compile with `gprbuild -p bingada_custom`
 
-- You need to copy GtkAda DLL files to your execution directory to run bingada.
+- Windows: You need to copy GtkAda DLL files to your execution directory to run bingada.
 
 # Installation under Ubuntu using FSF GNAT
 
