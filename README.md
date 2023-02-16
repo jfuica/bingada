@@ -1,5 +1,7 @@
 ![Ada (GNAT)](https://github.com/jfuica/bingada/workflows/Ada%20(GNAT)/badge.svg)
 [![Alire](https://img.shields.io/endpoint?url=https://alire.ada.dev/badges/bingada.json)](https://alire.ada.dev/crates/bingada.html)
+[![Download][download-img]][download]
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/ada-lang/Lobby)
 
 ![BingAda](https://raw.githubusercontent.com/jfuica/bingada/master/bombo.png "BingAda icon")
 
@@ -133,3 +135,7 @@ Audio recordings of numbers have been obtained from:
 - [English by NumberOne from Wikimedia Commons](https://commons.wikimedia.org/wiki/Category:English_pronunciation_of_numbers)
 - [German from Wikimedia Commons](https://commons.wikimedia.org/wiki/Category:German_pronunciation_of_numbers)
 - [Spanish by Sergeeo from freesound.org](https://freesound.org/people/sergeeo/sounds/177270/)
+
+
+  [download-img]: https://img.shields.io/github/downloads/jfuica/bingada/total.svg
+  [download]: https://github.com/jfuica/bingada/releases
