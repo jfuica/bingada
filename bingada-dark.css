@@ -11,6 +11,7 @@ GtkButton {
     font-weight: bold;
     font-size: xx-large;
     border-radius: 0px;
+    padding: 1px;
 }
 
 #myButton_blue,
@@ -21,6 +22,7 @@ GtkButton {
     font-style: normal;
     font-weight: bold;
     font-size: xx-large;
+    padding: 1px;
 }
 
 #myButton_previous_1,
@@ -32,6 +34,7 @@ GtkButton {
     font-weight: bold;
     font-size: xx-large;
     border-radius: 10px;
+    padding: 1px;
 }
 
 #myButton_previous_2,
@@ -43,6 +46,7 @@ GtkButton {
     font-weight: bold;
     font-size: xx-large;
     border-radius: 10px;
+    padding: 1px;
 }
 
 #myButton_previous_3,
@@ -54,6 +58,7 @@ GtkButton {
     font-weight: bold;
     font-size: xx-large;
     border-radius: 10px;
+    padding: 1px;
 }
 
 #myButton_white:hover,
